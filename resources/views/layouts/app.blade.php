@@ -23,8 +23,15 @@
     </style>
 </head>
 
+@props(['backgroundImage'])
+
+@php
+
+    $backgroundImage = $backgroundImage ?? asset('images/welcome-dashboard-picture.jpg');
+@endphp
+
 <body class="font-['Inter'] antialiased bg-cover bg-center bg-no-repeat min-h-screen"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('dimmed-lamp-on-table.jpg') }}')">
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.2)), url('{{ $backgroundImage }}')">
 
     <div class="min-h-screen bg-black/40 backdrop-blur-sm">
         @include('layouts.navigation')
@@ -43,14 +50,14 @@
         <main class="text-white">
             {{ $slot }}
         </main>
-        <!-- Page Heading -->
-        @isset($header)
+        {{-- <!-- Page Footer -->
+        @isset($footer)
             <header class="bg-white/10 backdrop-blur-md border-b border-white/10 shadow-lg">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+                    {{ $footer }}
                 </div>
             </header>
-        @endisset
+        @endisset --}}
     </div>
 </body>
 

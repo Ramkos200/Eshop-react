@@ -19,7 +19,7 @@
 </head>
 
 <body class="min-h-screen bg-cover bg-center bg-no-repeat"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('dimmed-lamp-on-table.jpg') }}')">
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('images/welcome-dashboard-picture.jpg') }}')">
 
     <!-- Hero Section -->
     <div class="min-h-screen flex items-center justify-center p-6 lg:p-8">
@@ -83,7 +83,7 @@
     <style>
         @media (max-width: 768px) {
             body {
-                background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url({{ asset('dimmed-lamp-on-table.jpg') }});
+                background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url({{ asset('images/welcome-dashboard-picture.jpg') }});
             }
         }
 

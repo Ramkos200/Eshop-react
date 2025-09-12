@@ -12,19 +12,15 @@
                     <div class="p-8 text-white">
                         <h3 class="font-['Cormorant_Garamond'] text-2xl font-light mb-4">Welcome,
                             {{ Auth::user()->name }}!</h3>
-                        <p class="font-['Inter'] text-gray-200 opacity-90 mb-6">
-                            {{ __("You're logged in!") }} Explore our lighting collection.
-                        </p>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                             <div class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-lg p-6">
                                 <h4 class="font-['Inter'] font-semibold text-white mb-2 underline">Quick Actions
                                 </h4>
                                 <ul class="font-['Inter'] text-gray-200 space-y-2">
-                                    <li><a href="{{ url('/products') }}"
-                                            class="hover:text-white transition-colors">Browse Products</a></li>
+                                    <li><a href="{{ url('/categories') }}"
+                                            class="hover:underline transition-colors">Browse Categories</a></li>
                                     <li><a href="{{ route('profile.edit') }}"
-                                            class="hover:text-white transition-colors">Update Profile</a></li>
+                                            class="hover:underline transition-colors">Update Profile</a></li>
                                     <li><a href="{{ url('/cart') }}" class="hover:text-white transition-colors">View
                                             Cart</a></li>
                                 </ul>

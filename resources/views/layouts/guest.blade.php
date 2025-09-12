@@ -18,7 +18,7 @@
 </head>
 
 <body class="font-['Inter'] text-white antialiased bg-cover bg-center bg-no-repeat min-h-screen"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('dimmed-lamp-on-table.jpg') }}')">
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('images/welcome-dashboard-picture.jpg') }}')">
 
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-black/40 backdrop-blur-sm">
         <div class="mb-8">

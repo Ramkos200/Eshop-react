@@ -16,14 +16,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-200">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    {{-- Commented out for now - add these when you create the routes
-                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" class="text-white hover:text-gray-200">
-                        {{ __('Products') }}
-                    </x-nav-link>
+
                     <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')" class="text-white hover:text-gray-200">
                         {{ __('Categories') }}
                     </x-nav-link>
-                    --}}
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index') && !request()->has('trash')" class="text-white hover:text-gray-200">
+                        {{ __('Products') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('products.index', 'trash')" :active="request()->has('trash')">
+                        {{ __('Deleted Items') }}
+                    </x-nav-link>
+
                 </div>
             </div>
 

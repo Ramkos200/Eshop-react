@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return view('categories.index')->with('categories', Category::all());
+        // return Category::all();
     }
 
     /**
@@ -20,7 +22,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('categories.create', compact('categories'));
     }
 
     /**
@@ -28,15 +31,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug',
+            'description' => 'nullable|string',
+            'parent_id' => 'nullable|exists:categories,id'
+        ]);
+
+        Category::create($validated);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Category created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($slug)
     {
-        //
+        $categories = Category::all();
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $products = Product::where('category_id', $category->id)->get();
+
+        return view('categories.show', compact('category', 'products', 'categories'));
     }
 
     /**
@@ -61,5 +78,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+        return redirect()->route('categories.index')
+            ->with('success', 'Category deleted successfully.');
     }
 }
