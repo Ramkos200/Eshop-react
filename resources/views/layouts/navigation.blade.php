@@ -23,6 +23,9 @@
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index') && !request()->has('trash')" class="text-white hover:text-gray-200">
                         {{ __('Products') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('orders.index')" :active="request()->has('orders')">
+                        {{ __('All Orders') }}
+                    </x-nav-link>
 
                     <x-nav-link :href="route('products.index', 'trash')" :active="request()->has('trash')">
                         {{ __('Deleted Items') }}

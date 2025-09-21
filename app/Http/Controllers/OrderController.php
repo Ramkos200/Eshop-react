@@ -13,6 +13,9 @@ class OrderController extends Controller
     public function index()
     {
         //
+        $orders = Order::all();
+        // return json_encode($orders);
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -37,6 +40,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         //
+        return view('orders.show', compact('order'));
     }
 
     /**

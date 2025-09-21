@@ -13,8 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index')->with('categories', Category::all());
-        // return Category::all();
+        return view('categories.index')->with('categories', Category::orderBy('created_at', 'desc')->get());
+        // return Category::orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -37,11 +37,8 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id'
         ]);
-
         Category::create($validated);
-
-        return redirect()->route('categories.index')
-            ->with('success', 'Category created successfully!');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
     }
 
     /**
@@ -52,8 +49,11 @@ class CategoryController extends Controller
         $categories = Category::all();
         $category = Category::where('slug', $slug)->firstOrFail();
         $products = Product::where('category_id', $category->id)->get();
+        $backgroundImage = file_exists(public_path('images/' . $category->slug . '.jpg'))
+            ? asset('images/' . $category->slug . '.jpg')
+            : asset('images/welcome-dashboard-picture.jpg');
 
-        return view('categories.show', compact('category', 'products', 'categories'));
+        return view('categories.show', compact('category', 'products', 'categories', 'backgroundImage'));
     }
 
     /**
@@ -79,7 +79,6 @@ class CategoryController extends Controller
     {
         //
         $category->delete();
-        return redirect()->route('categories.index')
-            ->with('success', 'Category deleted successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }

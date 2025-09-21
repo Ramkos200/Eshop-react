@@ -16,6 +16,7 @@ class OrderItem extends Model
 
     ];
     protected $casts = ['attributes' => 'array'];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -23,5 +24,9 @@ class OrderItem extends Model
     public function sku()
     {
         return $this->belongsTo(Sku::class);
+    }
+    public function getRouteKeyName()
+    {
+        return 'sku_code';
     }
 }

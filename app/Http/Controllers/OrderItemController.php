@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ class OrderItemController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -44,7 +46,16 @@ class OrderItemController extends Controller
      */
     public function edit(OrderItem $orderItem)
     {
-        //
+        // Eager load relationships to avoid N+1 queries
+
+        $orderItem->load(['order', 'sku.product']);
+        $order = $orderItem->order;
+
+        return view('orderitems.edit', [
+            'orderItem' => $orderItem,
+            'order' => $orderItem->order
+        ]);
+        // return view('orderitems.edit', compact('orderItem', 'order'));
     }
 
     /**
@@ -52,7 +63,20 @@ class OrderItemController extends Controller
      */
     public function update(Request $request, OrderItem $orderItem)
     {
-        //
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:1',
+            'attributes.color' => 'required|string',
+            'attributes.size' => 'required|in:medium,large',
+            'attributes.material' => 'required|in:wood,metal,plastic'
+        ]);
+
+        // dd($request);
+        $orderItem->update([
+            'quantity' => $validated['quantity'],
+            'attributes' => $validated['attributes']
+        ]);
+
+        return redirect()->route('orders.show', $orderItem->order);
     }
 
     /**

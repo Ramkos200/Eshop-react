@@ -14,15 +14,14 @@
                             {{ Auth::user()->name }}!</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                             <div class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-lg p-6">
-                                <h4 class="font-['Inter'] font-semibold text-white mb-2 underline">Quick Actions
-                                </h4>
+                                <h4 class="font-['Inter'] font-semibold text-white mb-2 underline">Quick Actions </h4>
                                 <ul class="font-['Inter'] text-gray-200 space-y-2">
                                     <li><a href="{{ url('/categories') }}"
                                             class="hover:underline transition-colors">Browse Categories</a></li>
                                     <li><a href="{{ route('profile.edit') }}"
                                             class="hover:underline transition-colors">Update Profile</a></li>
-                                    <li><a href="{{ url('/cart') }}" class="hover:text-white transition-colors">View
-                                            Cart</a></li>
+                                    {{-- <li><a href="{{ url('/cart') }}" class="hover:text-white transition-colors">View
+                                            Cart</a></li> --}}
                                 </ul>
                             </div>
 

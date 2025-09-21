@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
@@ -37,5 +39,7 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth')->group(function () {
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);
-    Route::get('/products/trash', [ProductController::class, 'index'])->name('products.trash');
+    Route::resource('/orders', OrderController::class);
+    Route::resource('/orderItem', OrderItemController::class);
+    Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
 });

@@ -27,6 +27,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'user1@eshop.com',
             'password' => bcrypt('password'),
         ]);
+        User::create([
+            'name' => 'user2',
+            'email' => 'user2@eshop.com',
+            'password' => bcrypt('password'),
+        ]);
         $this->call([
             CategorySeeder::class,
             ProductSeeder::class,

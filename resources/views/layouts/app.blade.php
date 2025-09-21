@@ -30,9 +30,8 @@
     $backgroundImage = $backgroundImage ?? asset('images/welcome-dashboard-picture.jpg');
 @endphp
 
-<body class="font-['Inter'] antialiased bg-cover bg-center bg-no-repeat min-h-screen"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.2)), url('{{ $backgroundImage }}')">
-
+<body class="font-['Inter'] antialiased bg-center bg-no-repeat min-h-screen"
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.2)), url('{{ $backgroundImage }}'); background-size: cover; background-position: left center;">
     <div class="min-h-screen bg-black/40 backdrop-blur-sm">
         @include('layouts.navigation')
 
