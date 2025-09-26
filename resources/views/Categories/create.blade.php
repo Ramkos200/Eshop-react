@@ -21,7 +21,8 @@
 
 														<div class="mb-4">
 																<label for="slug" class="block text-sm font-medium mb-2">Slug</label>
-																<input type="text" name="slug" id="slug" required
+																<input type="text" name="slug" id="slug" disabled
+																		placeholder="slug will be created automatically"
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
 														</div>
 
@@ -33,7 +34,7 @@
 
 														<div class="mb-4">
 																<label for="parent_id" class="block text-sm font-medium mb-2">Parent Category (choose
-																		No Parent if it is a main category, or choose the parent category if it is
+																		No Parent if it is a main category(*), or choose the parent category if it is
 																		subcategory)</label>
 																<select name="parent_id" id="parent_id"
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
@@ -61,7 +62,6 @@
 																		Cancel
 																</a>
 														</div>
-														<span>* indicates it is a main category</span>
 												</form>
 
 										</div>

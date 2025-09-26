@@ -13,8 +13,18 @@ class Order extends Model
         'total_amount',
         'notes',
         'billing_address',
+        'shipping_address',
+        'Customer'
 
     ];
+    public function getTotalAmountAttribute($value)
+    {
+        return $this->items->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+    }
+
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -1,7 +1,8 @@
 <x-app-layout>
 		<x-slot name="header">
 				<h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-						{{ __('Create New Product') }}
+						{{ __('Create New Product') }}{{ $category ? ' for ' . $category->name : '' }}
+
 				</h2>
 		</x-slot>
 
@@ -21,7 +22,8 @@
 
 														<div class="mb-4">
 																<label for="slug" class="block text-sm font-medium mb-2">Slug</label>
-																<input type="text" name="slug" id="slug" required
+																<input type="text" name="slug" id="slug" disabled
+																		placeholder="slug will be created automatically"
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
 
 														</div>
@@ -47,12 +49,17 @@
 																<textarea name="description" id="description" rows="3"
 																  class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400"></textarea>
 														</div>
+														<div class="mb-4">
+																<label for="image" class="block text-sm font-medium mb-2">Main image </label>
+																<input type="file" name="image" id="image"
+																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
+														</div>
 
 														<div class="mb-4">
 																<label for="category_id" class="block text-sm font-medium mb-2">Category *</label>
 																<select name="category_id" id="category_id" required
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
-																		<option value="">Select Category</option>
+																		<option value="">{{ $category ? $category->name : 'Select Category' }}</option>
 																		@foreach ($categories->whereNotNull('parent_id') as $category)
 																				@if ($category->children->count() === 0)
 																						<option value="{{ $category->id }}">

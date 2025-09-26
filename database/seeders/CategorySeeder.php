@@ -14,62 +14,108 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
 
-        Category::create([
+        // Category::create([
 
-            'name' => 'Floor Lamps',
-            'slug' => 'floor-lamps',
-            'description' => 'floor lamps for your home',
-            'parent_id' => null,
+        //     'name' => 'Floor Lamps',
+        //     'slug' => 'floor-lamps',
+        //     'description' => 'floor lamps for your home',
+        //     'parent_id' => null,
 
-        ]);
+        // ]);
+        // Category::create([
+        //     'name' => 'Desk Lamps',
+        //     'slug' => 'desk-lamps',
+        //     'description' => 'desk lamps for your office',
+        //     'parent_id' => null,
+
+        // ]);
+        // $categories = Category::all();
+        // Category::create([
+        //     'name' => 'Metal Desk Lamps',
+        //     'slug' => 'metal-desk-lamps',
+        //     'description' => 'Metal desk lamps for your office',
+        //     'parent_id' => $categories[1]->id
+
+        // ]);
+        // Category::create([
+        //     'name' => 'Wooden Desk Lamps',
+        //     'slug' => 'wooden-desk-lamps',
+        //     'description' => 'Wooden desk lamps for your office',
+        //     'parent_id' => $categories[1]->id
+
+        // ]);
+        // Category::create([
+        //     'name' => 'Plastic Floor Lamps',
+        //     'slug' => 'plastic-floor-lamps',
+        //     'description' => 'Plastic floor lamps for your home',
+        //     'parent_id' => $categories[0]->id
+
+        // ]);
+        // Category::create([
+        //     'name' => 'Metal FLoor Lamps',
+        //     'slug' => 'metal-floor-lamps',
+        //     'description' => 'Metal floor lamps for your home',
+        //     'parent_id' => $categories[0]->id
+
+        // ]);
+        // Category::create([
+        //     'name' => 'Wooden Floor Lamps',
+        //     'slug' => 'wooden-floor-lamps',
+        //     'description' => 'Wooden floor lamps for your home',
+        //     'parent_id' => $categories[0]->id
+
+        // ]);
+        // Category::create([
+        //     'name' => 'Glass Floor Lamps',
+        //     'slug' => 'glass-floor-lamps',
+        //     'description' => 'Glass floor lamps for your home',
+        //     'parent_id' => $categories[0]->id
+
+        // ]);
         Category::create([
-            'name' => 'Desk Lamps',
-            'slug' => 'desk-lamps',
-            'description' => 'desk lamps for your office',
+            'name' => 'Clothes',
+            'slug' => 'clothes',
+            'description' => 'clothes',
             'parent_id' => null,
 
         ]);
         $categories = Category::all();
         Category::create([
-            'name' => 'Metal Desk Lamps',
-            'slug' => 'metal-desk-lamps',
-            'description' => 'Metal desk lamps for your office',
+            'name' => 'Men CLothes',
+            'slug' => 'menclothes',
+            'description' => 'Men Clothes',
+            'parent_id' => $categories[0]->id
+
+        ]);
+
+        Category::create([
+            'name' => 'Women CLothes',
+            'slug' => 'womenclothes',
+            'description' => 'Women Clothes',
+            'parent_id' => $categories[0]->id
+
+        ]);
+        $categories = Category::all();
+        Category::create([
+            'name' => 'Men Pants',
+            'slug' => 'menpants',
+            'description' => 'Men Pants',
             'parent_id' => $categories[1]->id
 
         ]);
         Category::create([
-            'name' => 'Wooden Desk Lamps',
-            'slug' => 'wooden-desk-lamps',
-            'description' => 'Wooden desk lamps for your office',
+            'name' => 'Men T-shirts',
+            'slug' => 'mentshits',
+            'description' => 'Men T-shirts',
             'parent_id' => $categories[1]->id
 
         ]);
+        $categories = Category::all();
         Category::create([
-            'name' => 'Plastic Floor Lamps',
-            'slug' => 'plastic-floor-lamps',
-            'description' => 'Plastic floor lamps for your home',
-            'parent_id' => $categories[0]->id
-
-        ]);
-        Category::create([
-            'name' => 'Metal FLoor Lamps',
-            'slug' => 'metal-floor-lamps',
-            'description' => 'Metal floor lamps for your home',
-            'parent_id' => $categories[0]->id
-
-        ]);
-        Category::create([
-            'name' => 'Wooden Floor Lamps',
-            'slug' => 'wooden-floor-lamps',
-            'description' => 'Wooden floor lamps for your home',
-            'parent_id' => $categories[0]->id
-
-        ]);
-        Category::create([
-            'name' => 'Glass Floor Lamps',
-            'slug' => 'glass-floor-lamps',
-            'description' => 'Glass floor lamps for your home',
-            'parent_id' => $categories[0]->id
+            'name' => 'Women Dresses',
+            'slug' => 'womendresses',
+            'description' => 'Women Dresses',
+            'parent_id' => $categories[2]->id
 
         ]);
     }

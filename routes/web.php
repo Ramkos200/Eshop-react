@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkuController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,9 +38,27 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 Route::middleware('auth')->group(function () {
+
+    //aditional routes
+    Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+    Route::patch('/orders/{order}/address', [OrderController::class, 'updateAddress'])->name('orders.updateAddress');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::patch('/orders/{order}/updateuser', [OrderController::class, 'updateUser'])->name('orders.updateUser');
+    Route::get('/orders/{order}/addProducts', [OrderController::class, 'addProducts'])->name('orders.addProducts');
+    Route::post('/orders/{order}/addProduct/{product}', [OrderController::class, 'addProduct'])->name('orders.addProduct');
+    Route::post('/orders/{order}/decreaseQuantity/{product}', [OrderController::class, 'decreaseQuantity'])->name('orders.decreaseQuantity');
+    Route::post('/orders/{order}/removeProduct/{product}', [OrderController::class, 'removeProduct'])->name('orders.removeProduct');
+    Route::post('/orders/{order}/clearSelection', [OrderController::class, 'clearSelection'])->name('orders.clearSelection');
+    Route::post('/orders/{order}/finalize', [OrderController::class, 'finalizeOrder'])->name('orders.finalize');
+    Route::get('/skus/create/{product:slug}', [SkuController::class, 'create'])->name('sku.create');
+    Route::post('/skus/store/{product:slug}', [SkuController::class, 'store'])->name('skus.store');
+
+
+
+
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);
+    Route::resource('/skus', SkuController::class)->except('create', 'store');
     Route::resource('/orders', OrderController::class);
     Route::resource('/orderItem', OrderItemController::class);
-    Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
 });

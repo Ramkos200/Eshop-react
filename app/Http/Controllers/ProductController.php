@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Database\Seeders\CategorySeeder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -13,35 +15,50 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-
         $showTrash = $request->has('trash');
         $query = $showTrash ? Product::onlyTrashed() : Product::query();
-        $category = Category::find($request->category_id);
+        $perPage = 10;
 
+        //  eager load 
+        $query->with('category');
+
+        // Handle products filter
         if ($request->has('products')) {
-            $products = Product::whereIn('id', $request->products)->orderBy('created_at', 'desc')->get();
-
-            return view('products.index', compact('products', 'showTrash', 'category'));
+            $query->whereIn('id', (array)$request->products);
         }
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
-            $products = $query->orderBy('created_at', 'desc')->get();
-            return view('products.index', compact('products', 'showTrash', 'category'));
+            $category = Category::find($request->category_id);
+        } elseif ($request->has('category')) {
+            $category = Category::where('slug', $request->category)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
+            }
+        } else {
+            $category = null;
         }
 
-        $products = $query->orderBy('created_at', 'desc')->get();
+        // search 
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // sort 
+        $sort = $request->get('sort', 'created_at');
+        $direction = $request->get('direction', 'desc');
+
+        $products = $query->orderBy($sort, $direction)->paginate($perPage);
+
         return view('products.index', compact('products', 'showTrash', 'category'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
         //
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        $category = Category::find($request->category_id);
+        return view('products.create', compact('category', 'categories'));
     }
 
     /**
@@ -51,17 +68,27 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug',
+            // 'slug' => 'required|string|max:255|unique:products,slug',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:1',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id'
         ]);
+        $slug = Str::slug($validated['name']);
+        if (Product::where('slug', $slug)->exists()) {
+            $newslug = $slug . '-' . rand(1, 99);
+            $slug = 'SKU-' . $newslug;
+        }
+        Product::create([
+            'name' => $validated['name'],
+            'slug' => $slug,
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'status' => $validated['status'],
+            'category_id' => $validated['category_id'],
+        ]);
 
-        Product::create($validated);
-
-        return redirect()->route('products.index')
-            ->with('success', 'Product created successfully!');
+        return redirect()->route('products.index')->with('success', 'Product created successfully!');
     }
 
     /**
@@ -71,7 +98,8 @@ class ProductController extends Controller
     {
         //
         $product = Product::where('slug', $slug)->firstOrFail();
-        return view('products.show', compact('product'));
+        $attributes = $product->skus;
+        return view('products.show', compact('product', 'attributes'));
     }
 
 
@@ -83,7 +111,7 @@ class ProductController extends Controller
         //
         // $product = Product::find($product_id);
         $categories = Category::all();
-
+        session(['previous_url' => url()->previous()]);
         return view('products.edit', compact('product', 'categories'));
     }
 
@@ -102,7 +130,9 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id'
         ]);
         $product->update($validated);
-        return redirect()->route('products.show', $product->slug);
+        // return redirect()->route('products.show', $product->slug);
+        return redirect(session('previous_url', route('products.show', $product->slug)))
+            ->with('success', 'Product updated successfully!');
     }
 
     /**

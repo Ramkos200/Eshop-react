@@ -21,20 +21,24 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@eshop.com',
             'password' => bcrypt('password'),
+            'phone' => '+9631234567892'
         ]);
         User::create([
             'name' => 'user1',
             'email' => 'user1@eshop.com',
             'password' => bcrypt('password'),
+            'phone' => '+9631234567891'
         ]);
         User::create([
             'name' => 'user2',
             'email' => 'user2@eshop.com',
             'password' => bcrypt('password'),
+            'phone' => '+9631234567890'
         ]);
         $this->call([
             CategorySeeder::class,
             ProductSeeder::class,
+            SkuSeeder::class,
         ]);
     }
 }

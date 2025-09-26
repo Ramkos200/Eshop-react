@@ -15,42 +15,77 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $categories = Category::all();
-        Product::create([
-            'category_id' => $categories[6]->id,
-            'name' => 'first floor lamp',
-            'slug' => 'firstfloorlamps',
-            'description' => 'first floor lamps for your home',
-            'price' => '5.99',
-        ]);
-        Product::create([
-            'category_id' => $categories[6]->id,
-            'name' => 'second floor lamp',
-            'slug' => 'secondfloorlamps',
-            'description' => 'second floor lamps for your home',
-            'price' => '5.99',
-        ]);
-        Product::create([
-            'category_id' => $categories[6]->id,
-            'name' => 'third floor lamp',
-            'slug' => 'thirdfloorlamps',
-            'description' => 'third floor lamps for your home',
-            'price' => '5.99',
-        ]);
-        Product::create([
-            'category_id' => $categories[2]->id,
-            'name' => 'first Metal desk lamp',
-            'slug' => 'firstmetaldesklamp',
-            'description' => 'first metal desk lamps for your office',
-            'price' => '5.99',
+        // Product::create([
+        //     'category_id' => $categories[6]->id,
+        //     'name' => 'first floor lamp',
+        //     'slug' => 'firstfloorlamps',
+        //     'description' => 'first floor lamps for your home',
+        //     'price' => '5.99',
+        // ]);
+        // Product::create([
+        //     'category_id' => $categories[6]->id,
+        //     'name' => 'second floor lamp',
+        //     'slug' => 'secondfloorlamps',
+        //     'description' => 'second floor lamps for your home',
+        //     'price' => '5.99',
+        // ]);
+        // Product::create([
+        //     'category_id' => $categories[6]->id,
+        //     'name' => 'third floor lamp',
+        //     'slug' => 'thirdfloorlamps',
+        //     'description' => 'third floor lamps for your home',
+        //     'price' => '5.99',
+        // ]);
+        // Product::create([
+        //     'category_id' => $categories[2]->id,
+        //     'name' => 'first Metal desk lamp',
+        //     'slug' => 'firstmetaldesklamp',
+        //     'description' => 'first metal desk lamps for your office',
+        //     'price' => '5.99',
 
+        // ]);
+        // Product::create([
+        //     'category_id' => $categories[3]->id,
+        //     'name' => 'second Wooden desk lamp',
+        //     'slug' => 'secondwoodendesklamp',
+        //     'description' => 'second wooden desk lamps for your office',
+        //     'price' => '9.99',
+
+        // ]);
+        // Product::create([
+        //     'category_id' => $categories[6]->id,
+        //     'name' => 'first floor lamp',
+        //     'slug' => 'firstfloorlamps',
+        //     'description' => 'first floor lamps for your home',
+        //     'price' => '5.99',
+        // ]);
+        Product::create([
+            'category_id' => $categories[3]->id,
+            'name' => 'men pants 1',
+            'slug' => 'menpants1',
+            'description' => 'Men Pants 1',
+            'price' => '5.99',
         ]);
         Product::create([
             'category_id' => $categories[3]->id,
-            'name' => 'second Wooden desk lamp',
-            'slug' => 'secondwoodendesklamp',
-            'description' => 'second wooden desk lamps for your office',
-            'price' => '9.99',
-
+            'name' => 'men pants 2',
+            'slug' => 'menpants2',
+            'description' => 'Men Pants 2',
+            'price' => '5.99',
+        ]);
+        Product::create([
+            'category_id' => $categories[4]->id,
+            'name' => 'men tshirt 1',
+            'slug' => 'mentshirt1',
+            'description' => 'Men tshirt 1',
+            'price' => '5.99',
+        ]);
+        Product::create([
+            'category_id' => $categories[5]->id,
+            'name' => 'women dress 1',
+            'slug' => 'womendress1',
+            'description' => 'Women Dress 1',
+            'price' => '5.99',
         ]);
     }
 }

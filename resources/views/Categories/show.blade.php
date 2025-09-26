@@ -1,104 +1,217 @@
-<x-app-layout :backgroundImage="$backgroundImage">
+<x-app-layout>
 		<x-slot name="header">
 				<h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
 						{{ __($category->name) }}
 				</h2>
-
 		</x-slot>
+
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-12">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
-										<div class="p-8 text-white">
+								<a href="{{ route('categories.edit', $category->id) }}"
+										class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150 ml-2 mt-3 mb-3"
+										title="Edit Category">
+										Edit Category
+								</a>
+								<!-- Category Details Card -->
+								<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6">
+										<div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-300">
+												<div>
+														<h3 class="text-white font-semibold mb-3 text-lg">Category Information</h3>
+														<p class="mb-2"><span class="text-gray-400">Name:</span> {{ $category->name }}</p>
+														<p class="mb-2"><span class="text-gray-400">Slug:</span> {{ $category->slug }}</p>
+														<p class="mb-2">
+																<span class="text-gray-400">Parent Category:</span>
+																@if ($category->parent)
+																		<a href="{{ route('categories.show', $category->parent->slug) }}"
+																				class="text-blue-400 hover:text-blue-300">
+																				{{ $category->parent->name }}
+																		</a>
+																@else
+																		<span class="text-gray-500">No Parent (Main Category)</span>
+																@endif
+														</p>
+												</div>
+												<div>
+														<h3 class="text-white font-semibold mb-3 text-lg">Statistics</h3>
+														<p class="mb-2"><span class="text-gray-400">Subcategories:</span> {{ $category->children->count() }}</p>
+														<p class="mb-2"><span class="text-gray-400">Direct Products:</span> {{ $category->products->count() }}
+														</p>
+														<p class="mb-2"><span class="text-gray-400">Description:</span></p>
+														<p class="text-gray-300 bg-gray-700/30 p-3 rounded-md">
+																{{ $category->description ?? 'No description provided' }}
+														</p>
+												</div>
+										</div>
+								</div>
+
+								<!-- Action Buttons -->
+								<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+										<div class="flex space-x-3">
 												@if ($category->children->count() === 0)
 														@if ($category->parent_id !== null && $category->parent->parent_id !== null)
-																<p class="text-lg text-gray-400 italic ml-4 mb-5">Can't create more
-																		subcategories</p>
+																<x-link-button href="{{ route('products.create') }}">
+																		+ New Product
+																</x-link-button>
+														@else
+																<x-link-button href="{{ route('categories.create') }}">
+																		+ New Category
+																</x-link-button>
 														@endif
-														<div class="flex justify-left mb-5">
-																@if ($category->parent_id !== null && $category->parent->parent_id !== null)
-																		<x-link-button href="{{ route('products.create') }}">
-																				+ New Product
-																		</x-link-button>
-																@else
-																		<x-link-button href="{{ route('categories.create') }}"> + New Category</x-link-button>
-																@endif
-																<form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-																		class="{{ $products->count() ? 'hidden' : '' }}">
-																		@csrf
-																		@method('DELETE')
-																		<button type="submit"
-																				class="inline-flex items-center ml-2 px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-[&quot;Inter&quot;] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150"
-																				title="Delete Category" onclick="return confirm('delete subcategory?')">
-																				Delete Category
-																		</button>
-																</form>
-														</div>
-														<p class="text-lg text-gray-400 italic ml-4 mt-10">No subcategories</p>
 												@else
-														<p class="text-lg text-gray-400 italic ml-4 mb-5">Can't delete this category because it has subcategories
+														<x-link-button href="{{ route('categories.create') }}">
+																+ New Category
+														</x-link-button>
+												@endif
+										</div>
+
+										@if ($category->children->count() === 0 && $products->count() === 0)
+												<form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+														@csrf
+														@method('DELETE')
+														<button type="submit"
+																class="inline-flex items-center px-4 py-2 bg-red-600/20 backdrop-blur-md border border-red-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-red-700/30 hover:border-red-500/50 focus:bg-red-700/30 active:bg-red-800/40 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 transition ease-in-out duration-150"
+																title="Delete Category" onclick="return confirm('Are you sure you want to delete this category?')">
+																Delete Category
+														</button>
+												</form>
+										@else
+												@if ($category->parent_id === null || ($category->parent_id !== null && $category->parent->parent_id === null))
+														<p class="text-yellow-400 text-sm font-medium">
+																⚠️ Can't delete this category because it has {{ $category->children->count() }} subcategories
 														</p>
-														<x-link-button href="{{ route('categories.create') }}"> + New Category</x-link-button>
-														<div class="grid grid-cols-1  gap-6 mt-8 ">
-																<div class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-lg p-6">
+												@else
+														<p class="text-yellow-400 text-sm font-medium">
+																🔔 Can't delete this category because it has {{ $category->products->count() }} products.
+														</p>
+												@endif
+										@endif
+								</div>
 
+								<!-- Subcategories Section -->
+								@if ($category->parent_id === null || ($category->parent_id !== null && $category->parent->parent_id === null))
+										<!-- Subcategories Section - Only show for main categories and direct children (not grandchildren) -->
+										<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
+												<div class="px-6 py-4 bg-gray-700/50 border-b border-gray-700">
+														<h3 class="text-lg font-semibold text-white">
+																@if ($category->children->count() > 0)
+																		Subcategories ({{ $category->children->count() }})
+																@else
+																		No Subcategories
+																@endif
+														</h3>
+												</div>
+
+												<div class="p-6">
+														@if ($category->children->count() === 0)
+																<div class="text-center py-8">
+																		<p class="text-gray-400 text-lg italic">No subcategories found</p>
+																		<p class="text-gray-500 text-sm mt-2">This category doesn't have any subcategories yet.</p>
+																</div>
+														@else
+																<div class="grid grid-cols-1 gap-6">
 																		@foreach ($category->children as $subcategory)
-																				<div class="mb-6 p-4 bg-white/10 rounded-lg">
-																						<!-- Main subcategory  -->
-																						<a href="{{ route('categories.show', $subcategory->slug) }}"
-																								class="block text-lg font-semibold text-white hover:text-blue-300 transition-colors mb-2">
-																								{{ $subcategory->name }}
-																						</a>
-
-																						<!-- subcategories and products -->
-																						<div class="text-sm text-gray-300 mb-3">
-																								<span class="mr-4">
-																										📁 {{ $subcategory->children->count() }} subcategories
-																								</span>
-																								<span>
-																										@foreach ($subcategory->products as $product)
-																												<a href="{{ route('products.show', $product->slug) }}"
-																														class="text-xl font-semibold hover:underline block mb-3">
-																														🛍️ {{ $product->name }}
-																												</a>
-																										@endforeach
-																								</span>
+																				<div
+																						class="bg-gray-700/30 backdrop-blur-sm border border-gray-600/50 rounded-lg p-6 hover:bg-gray-700/50 transition-colors duration-200">
+																						<!-- Main subcategory header -->
+																						<div class="flex justify-between items-start mb-4">
+																								<div>
+																										<a href="{{ route('categories.show', $subcategory->slug) }}"
+																												class="text-xl font-semibold text-white hover:text-blue-300 transition-colors block">
+																												{{ $subcategory->name }}
+																										</a>
+																										<div class="text-sm text-gray-400 mt-1">
+																												<span class="mr-4">📁 {{ $subcategory->children->count() }} subcategories</span>
+																												<span>🛍️ {{ $subcategory->products->count() }} direct products</span>
+																										</div>
+																										@if ($subcategory->description)
+																												<div class="text-sm text-gray-300 mt-2">
+																														{{ Str::limit($subcategory->description, 100) }}
+																												</div>
+																										@endif
+																								</div>
+																								<div class="flex space-x-2">
+																										<a href="{{ route('categories.edit', $subcategory->id) }}"
+																												class="text-blue-400 hover:text-blue-300 transition-colors" title="Edit Subcategory">
+																												<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+																														stroke="currentColor">
+																														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+																																d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+																												</svg>
+																										</a>
+																								</div>
 																						</div>
 
 																						<!-- Child subcategories -->
 																						@if ($subcategory->children->isNotEmpty())
-																								<div class="ml-4 mt-2">
-																										<h5 class="text-sm font-medium text-gray-400 mb-2">Subcategories:
-																										</h5>
-																										<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+																								<div class="mt-4">
+																										<h5 class="text-sm font-medium text-gray-400 mb-3">Subcategories:</h5>
+																										<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 																												@foreach ($subcategory->children as $child)
-																														<a href="{{ route('products.index', ['category_id' => $child->id]) }}"
-																																class="text-sm text-blue-300 hover:text-blue-200 transition-colors flex items-center">
-																																<span class="mr-1">•</span>
-																																{{ $child->name }}
-																																<span class="text-xs text-gray-400 ml-2">
-																																		P: ({{ $child->products->count() }})
-																																		SC: ({{ $subcategory->children->count() }})
-																																</span>
+																														<a href="{{ route('categories.show', $child->slug) }}"
+																																class="bg-gray-600/30 hover:bg-gray-600/50 p-3 rounded-md transition-colors duration-150">
+																																<div class="text-sm text-white font-medium">{{ $child->name }}</div>
+																																<div class="text-xs text-gray-400 mt-1">
+																																		Products: {{ $child->products->count() }} |
+																																		Subcategories: {{ $child->children->count() }}
+																																</div>
 																														</a>
 																												@endforeach
 																										</div>
 																								</div>
-																						@else
-																								<p class="text-sm text-gray-400 italic ml-5">No subcategories</p>
+																						@endif
+
+																						<!-- Direct products in this subcategory -->
+																						@if ($subcategory->products->isNotEmpty())
+																								<div class="mt-4">
+																										<h5 class="text-sm font-medium text-gray-400 mb-3">Direct Products:</h5>
+																										<div class="space-y-2">
+																												@foreach ($subcategory->products as $product)
+																														<a href="{{ route('products.show', $product->slug) }}"
+																																class="flex items-center justify-between bg-gray-600/20 hover:bg-gray-600/40 p-2 rounded-md transition-colors duration-150">
+																																<span class="text-sm text-white">{{ $product->name }}</span>
+																																<span class="text-xs text-green-400">${{ number_format($product->price, 2) }}</span>
+																														</a>
+																												@endforeach
+																										</div>
+																								</div>
 																						@endif
 																				</div>
 
 																				<!-- Separator between subcategories -->
 																				@if (!$loop->last)
-																						<hr class="border-white/10 my-4">
+																						<hr class="border-gray-600/30 my-2">
 																				@endif
 																		@endforeach
 																</div>
-														</div>
-												@endif
+														@endif
+												</div>
 										</div>
-								</div>
+								@endif>
+
+								<!-- Direct Products Section (if this category has direct products) -->
+								@if ($category->products->count() > 0)
+										<div
+												class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden mt-6">
+												<div class="px-6 py-4 bg-gray-700/50 border-b border-gray-700 hover:underline">
+														<a href="{{ route('products.index', ['category_id' => $category->id]) }}"
+																class="inline-flex items-left px-4 py-2 bg-green-600/20 backdrop-blur-md border border-green-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-green-700/30 hover:border-green-500/50 focus:bg-green-700/30 active:bg-green-800/40 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:ring-offset-2 transition ease-in-out duration-150 ml-2">
+																Category's Direct Products ({{ $category->products->count() }})
+														</a>
+												</div>
+												<div class="p-6">
+														<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+																@foreach ($category->products as $product)
+																		<a href="{{ route('products.show', $product->slug) }}"
+																				class="bg-gray-700/30 hover:bg-gray-700/50 p-4 rounded-md transition-colors duration-150">
+																				<div class="text-white font-medium">{{ $product->name }}</div>
+																				<div class="text-sm text-gray-400 mt-1">${{ number_format($product->price, 2) }}</div>
+																		</a>
+																@endforeach
+														</div>
+												</div>
+										</div>
+								@endif
 						</div>
 				</div>
 		</div>
