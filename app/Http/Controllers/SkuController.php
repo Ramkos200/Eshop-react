@@ -76,14 +76,15 @@ class SkuController extends Controller
      */
     public function edit(Sku $sku)
     {
-        return view('skus.update', compact('sku'));
+        return view('skus.edit', compact('sku'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sku $sku, Product $product)
+    public function update(Request $request, Sku $sku)
     {
+        $sku->load('product');
         $validated = $request->validate([
             'price' => 'required|numeric|min:1',
             'inventory' => 'required|numeric|min:1',
@@ -93,26 +94,17 @@ class SkuController extends Controller
             'material' => 'required|string',
 
         ]);
-        $categoryCode = substr(strtoupper($product->category->name ?? 'GEN'), 0, 3);
-        $productCode = substr(strtoupper($product->name ?? 'GEN'), 0, 3);
-        $colorCode = substr(strtoupper($validated['color']), 0, 3);
-        $sizeCode = strtoupper($validated['size']);
-        $code = $categoryCode . '-' . $productCode . '-' . $colorCode . '-' . $sizeCode;
-        Sku::update([
-            'product_id' => $product->id,
-            // 'code' => 'SKU-' . date('Ymd-His') . rand(100, 999),
-            'code' => $code,
+        $sku->update([
             'price' => $validated['price'],
             'inventory' => $validated['inventory'],
-            'attributes' => [
+            'attributes' => json_encode([
                 'color' => $validated['color'],
                 'size' => $validated['size'],
                 'material' => $validated['material'],
-            ]
-
+            ])
         ]);
 
-        return redirect()->route('products.show', $product->slug)->with('success', 'Variant updated successfully!');
+        return redirect()->route('products.show', $sku->product->slug)->with('success', 'Variant updated successfully!');
     }
 
     /**

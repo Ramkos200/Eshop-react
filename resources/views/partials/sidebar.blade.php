@@ -24,22 +24,22 @@
 						New Product
 				</a>
 				<a href="{{ route('orders.create') }}" class="flex items-center px-4 py-2 text-gray-300 bg-blue-900/30 rounded-lg">
-						<i class="fas fa-plus mr-3 text-green-500"></i>
-						Orders
+						<i class="fas fa-plus mr-3 text-purple-500"></i>
+						Order
 				</a>
 				<a href="{{ route('categories.index') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
-						<i class="fas fa-list mr-3 text-gray-400"></i>
+						<i class="fas fa-list mr-3 text-amber-400"></i>
 						All Categories
 				</a>
 				<a href="{{ route('products.index') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
-						<i class="fas fa-box mr-3 text-yellow-400"></i>
+						<i class="fas fa-list mr-3 text-green-400"></i>
 						Show all Products
 				</a>
 				<a href="{{ route('products.browse') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
-						<i class="fas fa-box mr-3 text-yellow-400"></i>
+						<i class="fas fa-list mr-3 text-purple-400"></i>
 						Show all Variants
 				</a>
 

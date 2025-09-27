@@ -1,25 +1,30 @@
 <x-app-layout>
 		<x-slot name="header">
 				<h2 class="inline font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-						Add Variants to Order
+						@if (isset($order) && $order)
+								Add Variants to Order
+						@else
+								All Variants
+						@endif
 				</h2>
 		</x-slot>
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat min-w-full">
 				<div class="py-2">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-								<!-- Back Button -->
-								<div class="mb-6">
-										<a href="{{ route('orders.show', $order) }}"
-												class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
-												<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
-														stroke="currentColor">
-														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-												</svg>
-												Back to Order #{{ $order->order_code }}
-										</a>
-								</div>
-
+								@if (isset($order) && $order)
+										<!-- Back Button -->
+										<div class="mb-6">
+												<a href="{{ route('orders.show', $order) }}"
+														class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+														<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+																stroke="currentColor">
+																<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+														</svg>
+														Back to Order #{{ $order->order_code }}
+												</a>
+										</div>
+								@endif
 								{{-- searchForm --}}
 								@include('partials.searchForm', [
 										'route' => route('orders.addProducts', $order),

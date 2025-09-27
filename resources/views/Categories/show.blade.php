@@ -8,6 +8,17 @@
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-12">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+								<!-- Back Button -->
+								<div class="mb-6">
+										<a href="{{ route('categories.index') }}"
+												class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+														stroke="currentColor">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+												</svg>
+												Back to Categories
+										</a>
+								</div>
 								<a href="{{ route('categories.edit', $category->id) }}"
 										class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150 ml-2 mt-3 mb-3"
 										title="Edit Category">
@@ -34,7 +45,10 @@
 												</div>
 												<div>
 														<h3 class="text-white font-semibold mb-3 text-lg">Statistics</h3>
-														<p class="mb-2"><span class="text-gray-400">Subcategories:</span> {{ $category->children->count() }}</p>
+														@if ($category->children->count() > 0)
+																<p class="mb-2"><span class="text-gray-400">Subcategories:</span> {{ $category->children->count() }}
+																</p>
+														@endif
 														<p class="mb-2"><span class="text-gray-400">Direct Products:</span> {{ $category->products->count() }}
 														</p>
 														<p class="mb-2"><span class="text-gray-400">Description:</span></p>

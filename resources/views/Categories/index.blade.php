@@ -10,6 +10,7 @@
 				<div class="py-2">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 								<span class="text-yellow-400 italic">* Can't delete a category if it has subcategories</span>
+								
 								<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-2 gap-4">
 										<x-link-button href="{{ route('categories.create') }}">
 												+ New Category
