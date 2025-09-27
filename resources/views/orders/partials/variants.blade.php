@@ -170,7 +170,6 @@
 																				{{-- Plus Button --}}
 																				@include('orders.partials.plusbutton', ['sku' => $variant, 'order' => $order])
 																		@else
-																				{{-- Edit/Delete buttons for non-order context --}}
 																				{{-- edit button --}}
 																				@include('products.partials.edit', [
 																						'action_route' => route('skus.edit', $variant),
