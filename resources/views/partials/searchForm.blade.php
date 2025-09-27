@@ -20,7 +20,7 @@
 						Search
 				</button>
 				@if (request('search'))
-						<a href="{{ route($route) }}"
+						<a href="{{ $route }}"
 								class="text-gray-400 hover:text-white transition-colors w-full md:w-auto text-center">
 								Clear Search
 						</a>

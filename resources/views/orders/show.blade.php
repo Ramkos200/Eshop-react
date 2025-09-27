@@ -155,7 +155,7 @@
 																				</button>
 																		@endif
 
-																		<!-- Address Edit Form (Initially Hidden) -->
+																		<!-- Address Edit  -->
 																		<div id="addressForm" class="mt-3 p-3 bg-gray-700/70 rounded-md hidden">
 																				<form action="{{ route('orders.updateAddress', $order) }}" method="POST">
 																						@csrf

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Sku;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -189,44 +190,64 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'User updated successfully!');
     }
 
-    public function addProducts(Request $request, Order $order)
+    public function addProducts(Request $request, Order $order = null)
     {
-        $query = Product::with('category');
+        $query = Product::with(['category', 'skus' => function ($query) use ($request) {
+            // Eager load only the matching SKUs when searching
+            if ($request->has('search') && !empty($request->search)) {
+                $query->where('code', 'like', '%' . $request->search . '%');
+            }
+            // $query->with('images');
+        }]);
+
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $searchTerm = '%' . $request->search . '%';
+
+            $query->whereHas('skus', function ($skuQuery) use ($searchTerm) {
+                $skuQuery->where('code', 'like', $searchTerm);
+            });
         }
+
         $products = $query->paginate(10);
         $selectedProducts = Session::get('selectedProducts', []);
 
         return view('orders.addproducts', compact('products', 'selectedProducts', 'order'));
     }
 
-    public function addProduct(Order $order, Product $product)
+    public function addProduct($orderId, $skuId)
     {
+        $order = Order::findOrFail($orderId);
+        $sku = Sku::findOrFail($skuId);
+
         $selectedProducts = Session::get('selectedProducts', []);
 
-        if (!isset($selectedProducts[$product->id])) {
-            $selectedProducts[$product->id] = [
-                'product' => $product,
+        // Use the SKU's ID as the key
+        if (!isset($selectedProducts[$sku->id])) {
+            $selectedProducts[$sku->id] = [
+                'sku' => $sku,
+                'product' => $sku->product,
                 'quantity' => 0
             ];
         }
 
-        $selectedProducts[$product->id]['quantity']++;
+        $selectedProducts[$sku->id]['quantity']++;
         Session::put('selectedProducts', $selectedProducts);
 
         return redirect()->route('orders.addProducts', $order);
     }
 
-    public function decreaseQuantity(Order $order, Product $product)
+    public function decreaseQuantity($orderId, $skuId)
     {
+        $order = Order::findOrFail($orderId);
+        $sku = Sku::findOrFail($skuId);
+
         $selectedProducts = Session::get('selectedProducts', []);
 
-        if (isset($selectedProducts[$product->id]) && $selectedProducts[$product->id]['quantity'] > 0) {
-            $selectedProducts[$product->id]['quantity']--;
+        if (isset($selectedProducts[$sku->id]) && $selectedProducts[$sku->id]['quantity'] > 0) {
+            $selectedProducts[$sku->id]['quantity']--;
 
-            if ($selectedProducts[$product->id]['quantity'] === 0) {
-                unset($selectedProducts[$product->id]);
+            if ($selectedProducts[$sku->id]['quantity'] === 0) {
+                unset($selectedProducts[$sku->id]);
             }
 
             Session::put('selectedProducts', $selectedProducts);
@@ -235,16 +256,16 @@ class OrderController extends Controller
         return redirect()->route('orders.addProducts', $order);
     }
 
-    public function removeProduct(Product $product, Order $order) // Add Order parameter
+    public function removeProduct(Order $order, Sku $sku)
     {
         $selectedProducts = Session::get('selectedProducts', []);
 
-        if (isset($selectedProducts[$product->id])) {
-            unset($selectedProducts[$product->id]);
+        if (isset($selectedProducts[$sku->id])) {
+            unset($selectedProducts[$sku->id]);
             Session::put('selectedProducts', $selectedProducts);
         }
 
-        return redirect()->route('orders.addProducts', $order); // Pass the order
+        return redirect()->route('orders.addProducts', $order);
     }
 
     public function clearSelection(Order $order)
@@ -253,39 +274,38 @@ class OrderController extends Controller
         return redirect()->route('orders.addProducts', $order);
     }
 
+
+
     public function finalizeOrder(Request $request, Order $order)
     {
         $selectedProducts = Session::get('selectedProducts', []);
 
         if (empty($selectedProducts)) {
             return redirect()->route('orders.addProducts', $order)
-                ->with('error', 'No products selected for order.');
+                ->with('error', 'No SKUs selected for order.');
         }
 
         $totalAmount = 0;
 
-        // Add products to the order
-        foreach ($selectedProducts as $productId => $productData) {
-            $product = Product::find($productId);
+        // Add SKUs to the order
+        foreach ($selectedProducts as $skuId => $item) {
+            $sku = Sku::find($skuId);
 
-            if ($product) {
-                $quantity = $productData['quantity'] ?? 1;
-                $unitPrice = $product->price;
+            if ($sku) {
+                $quantity = $item['quantity'] ?? 1;
+                $unitPrice = $sku->price;
                 $subtotal = $unitPrice * $quantity;
                 $totalAmount += $subtotal;
 
-                // Get first SKU or use product as fallback
-                $firstSku = $product->skus->first();
-
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $productId,
+                    'product_id' => $sku->product_id, // Store the parent product ID
                     'quantity' => $quantity,
                     'price' => $unitPrice,
                     'subtotal' => $subtotal,
-                    'sku_code' => $firstSku ? $firstSku->code : 'SKU-' . $product->id,
-                    'sku_id' => $firstSku ? $firstSku->id : null,
-                    'attributes' => json_encode($firstSku->attributes ?? ['color' => '', 'size' => '', 'materials' => '']),
+                    'sku_code' => $sku->code,
+                    'sku_id' => $sku->id,
+                    'attributes' => json_encode($sku->attributes ?? ['color' => '', 'size' => '', 'materials' => '']),
                 ]);
             }
         }
@@ -297,6 +317,6 @@ class OrderController extends Controller
         Session::forget('selectedProducts');
 
         return redirect()->route('orders.show', $order)
-            ->with('success', 'Order finalized successfully! Order #: ' . $order->order_code); // Fixed: order_code not order_number
+            ->with('success', 'Order finalized successfully! Order #: ' . $order->order_code);
     }
 }

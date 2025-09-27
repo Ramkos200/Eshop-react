@@ -1,7 +1,7 @@
 <x-app-layout>
 		<x-slot name="header">
 				<h2 class="inline font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-						Add Products to Order
+						Add Variants to Order
 				</h2>
 		</x-slot>
 
@@ -10,43 +10,54 @@
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 								<!-- Back Button -->
 								<div class="mb-6">
-										<a href="{{ route('orders.index') }}"
+										<a href="{{ route('orders.show', $order) }}"
 												class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
 												<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
 														stroke="currentColor">
 														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 												</svg>
-												Back to Orders
+												Back to Order #{{ $order->order_code }}
 										</a>
 								</div>
+
 								{{-- searchForm --}}
 								@include('partials.searchForm', [
 										'route' => route('orders.addProducts', $order),
-										'placeholder' => 'Seacrch Products...',
+										'placeholder' => 'Search by SKU...',
 								])
 
-								<!-- Selected items -->
+								<!-- Selected SKUs -->
 								@if (!empty($selectedProducts))
 										<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6">
 												<h3 class="text-lg font-medium text-white mb-4">Current Selection</h3>
 												<div class="space-y-3">
 														@php $subtotal = 0; @endphp
-														@foreach ($selectedProducts as $productId => $item)
-																@php $subtotal += $item['product']->price * $item['quantity']; @endphp
+														@foreach ($selectedProducts as $skuId => $item)
+																@php $subtotal += $item['sku']->price * $item['quantity']; @endphp
 																<div class="flex justify-between items-center py-2 border-b border-gray-700/30">
 																		<div class="flex items-center space-x-3">
-																				<div class="h-10 w-10 rounded overflow-hidden">
-																						<img src="{{ asset('/product-images/' . $item['product']->slug . '.jpg') }}"
-																								alt="{{ $item['product']->name }}" class="h-full w-full object-cover">
+																				@if ($item['sku']->images && $item['sku']->images->count() > 0)
+																						<div class="h-10 w-10 rounded overflow-hidden border border-gray-600">
+																								<img src="{{ asset('storage/' . $item['sku']->images->first()->path) }}"
+																										alt="{{ $item['sku']->code }}" class="h-full w-full object-cover">
+																						</div>
+																				@else
+																						<div class="h-10 w-10 rounded bg-gray-700 flex items-center justify-center text-xs text-gray-400">
+																								No Image
+																						</div>
+																				@endif
+																				<div>
+																						<span class="text-white font-medium">{{ $item['sku']->code }}</span>
+																						{{-- <div class="text-sm text-gray-400">{{ $item['product']->name }}</div> --}}
 																				</div>
-																				<span class="text-white">{{ $item['product']->name }}</span>
 																		</div>
 																		<div class="flex items-center space-x-4">
-																				<span class="text-gray-300">${{ number_format($item['product']->price, 2) }} ×
+																				<span class="text-gray-300">${{ number_format($item['sku']->price, 2) }} ×
 																						{{ $item['quantity'] }}</span>
-																				<span
-																						class="text-white font-medium">${{ number_format($item['product']->price * $item['quantity'], 2) }}</span>
-																				<form action="{{ route('orders.removeProduct', ['order' => $order, 'product' => $productId]) }}"
+																				<span class="text-white font-medium">
+																						${{ number_format($item['sku']->price * $item['quantity'], 2) }}
+																				</span>
+																				<form action="{{ route('orders.removeProduct', ['order' => $order, 'sku' => $skuId]) }}"
 																						method="POST" class="inline">
 																						@csrf
 																						<button type="submit" class="text-red-400 hover:text-red-300 transition-colors"
@@ -84,8 +95,8 @@
 										</div>
 								@endif
 
-								<!-- Products Table with plus and minus buttons-->
-								@include('products.partials.products', ['showPlusButton' => true])
+								<!-- Variants Table with plus and minus buttons-->
+								@include('orders.partials.variants', ['showPlusButton' => true])
 						</div>
 				</div>
 		</div>
