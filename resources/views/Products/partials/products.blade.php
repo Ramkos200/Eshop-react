@@ -122,10 +122,12 @@
 														</div>
 												</td>
 												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap"> {{ Str::limit($product->description, 20) }}</div>
+														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap">
+																{{ Str::limit($product->description, 20) }}</div>
 												</td>
 												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap"> {{ $product->category->name ?? 'no Category' }}
+														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap">
+																{{ $product->category->name ?? 'no Category' }}
 														</div>
 												</td>
 												<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
@@ -134,7 +136,13 @@
 												<td class="px-6 py-4 whitespace-nowrap">
 														<span
 																class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                {{ $product->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                                {{ $product->status === 'Published'
+																																																    ? 'bg-green-100 text-green-800'
+																																																    : ($product->status === 'Draft'
+																																																        ? 'bg-yellow-100 text-yellow-800'
+																																																        : ($product->status === 'Archived'
+																																																            ? 'bg-red-100 text-red-800'
+																																																            : 'bg-gray-100 text-gray-800')) }}">
 																{{ $product->status }}
 														</span>
 												</td>

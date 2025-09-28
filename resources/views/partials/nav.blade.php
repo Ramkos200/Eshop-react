@@ -3,7 +3,7 @@
 				<div class="flex justify-between h-16">
 						<!-- Logo -->
 						<div class="flex items-center">
-								<a href="{{ url('/') }}" class="flex-shrink-0 flex items-center">
+								<a href="{{ url('dashboard') }}" class="flex-shrink-0 flex items-center">
 										<i class="fas fa-lightbulb text-amber-500 text-2xl mr-2"></i>
 										<span class="font-['Cormorant_Garamond'] text-xl font-semibold text-white"> {{ env('APP_NAME') }}</span>
 								</a>
@@ -57,7 +57,7 @@
 														class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Profile</a>
 												<a href="{{ route('orders.index') }}"
 														class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Orders</a>
-												<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Wishlist</a>
+												{{-- <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Wishlist</a> --}}
 												<div class="border-t border-gray-600"></div>
 												<form method="POST" action="{{ route('logout') }}">
 														@csrf

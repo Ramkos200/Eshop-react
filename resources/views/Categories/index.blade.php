@@ -10,7 +10,7 @@
 				<div class="py-2">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 								<span class="text-yellow-400 italic">* Can't delete a category if it has subcategories</span>
-								
+
 								<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-2 gap-4">
 										<x-link-button href="{{ route('categories.create') }}">
 												+ New Category
@@ -93,7 +93,7 @@
 																								@endforeach
 																						</div>
 																				</td>
-																				<td class="px-6 py-4 align-top">
+																				<td class="px-20 align-top">
 																						<div class="space-y-4">
 																								@foreach ($category->children as $subcategory)
 																										@php
@@ -105,7 +105,7 @@
 																												    }, $Catproducts);
 																												}
 																										@endphp
-																										<div class="h-8 flex items-center min-h-[80px]">
+																										<div class="h-8 flex items-center min-h-[110px]">
 																												@if (!empty($productIds))
 																														<a href="{{ route('products.index', ['products' => $productIds]) }}"
 																																class="text-blue-400 hover:text-blue-300 transition-colors text-sm">
@@ -128,7 +128,7 @@
 																										'action_route' => route('categories.edit', $category->id),
 																								])
 
-																								<!-- special category delete icon -->
+																								<!--  category delete icon -->
 																								<form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
 																										@csrf
 																										@method('DELETE')

@@ -9,15 +9,18 @@ use App\Http\Controllers\SkuController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+use App\Http\Controllers\DashboardController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 
 // Route::get('/dashboard', function () {
@@ -54,8 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/skus/store/{product:slug}', [SkuController::class, 'store'])->name('skus.store');
     Route::get('/products/browse', [OrderController::class, 'addProducts'])->name('products.browse');
 
-
-
+    //the remaining of resources routes
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);
     Route::resource('/skus', SkuController::class)->except('create', 'store');
