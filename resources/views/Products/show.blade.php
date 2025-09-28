@@ -1,7 +1,7 @@
 <x-app-layout>
 		<x-slot name="header">
 				<h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-						{{ __($product->name) }}
+						Variantes For {{ __($product->name) }}
 				</h2>
 		</x-slot>
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">

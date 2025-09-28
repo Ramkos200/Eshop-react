@@ -97,11 +97,11 @@ class SkuController extends Controller
         $sku->update([
             'price' => $validated['price'],
             'inventory' => $validated['inventory'],
-            'attributes' => json_encode([
+            'attributes' => [
                 'color' => $validated['color'],
                 'size' => $validated['size'],
                 'material' => $validated['material'],
-            ])
+            ]
         ]);
 
         return redirect()->route('products.show', $sku->product->slug)->with('success', 'Variant updated successfully!');

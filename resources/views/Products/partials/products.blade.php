@@ -122,10 +122,10 @@
 														</div>
 												</td>
 												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate"> {{ Str::limit($product->description, 20) }}</div>
+														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap"> {{ Str::limit($product->description, 20) }}</div>
 												</td>
 												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate"> {{ $product->category->name ?? 'no Category' }}
+														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap"> {{ $product->category->name ?? 'no Category' }}
 														</div>
 												</td>
 												<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">

@@ -13,14 +13,15 @@ class SkuSeeder extends Seeder
      */
     public function run(): void
     {
+        
         Sku::Create([
             'product_id' => '1',
             'code' => 'SKU-20250925-220944514',
             'price' => '10.00',
             'inventory' => '10',
             'attributes' => [
-                'color' => 'red',
-                'size' => 'xs',
+                'color' => 'green',
+                'size' => 'M',
                 'material' => 'cotton',
             ],
         ]);
@@ -41,8 +42,8 @@ class SkuSeeder extends Seeder
             'price' => '10.00',
             'inventory' => '10',
             'attributes' => [
-                'color' => 'red',
-                'size' => 'xs',
+                'color' => 'blue',
+                'size' => 'XL',
                 'material' => 'cotton',
             ],
         ]);
