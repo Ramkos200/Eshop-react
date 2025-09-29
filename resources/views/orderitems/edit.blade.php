@@ -1,28 +1,28 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-            {{ __('Edit Order Item Quantity') }}
-        </h2>
-    </x-slot>
+		<x-slot name="header">
+				<h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
+						{{ __('Edit Order Item Quantity') }}
+				</h2>
+		</x-slot>
 
-    <div class="min-h-screen bg-cover bg-center bg-no-repeat">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-8 text-white">
-                        {{-- @dd($orderItem) --}}
-                        <form action="{{ route('orderItem.update', $orderItem) }}" method="POST">
-                            @csrf
-                            @method('put')
+		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
+										<div class="p-8 text-white">
+												{{-- @dd($orderItem) --}}
+												<form action="{{ route('orderItem.update', $orderItem) }}" method="POST">
+														@csrf
+														@method('put')
 
-                            {{-- <div class="mb-4">
+														{{-- <div class="mb-4">
                                 <label for="name" class="block text-sm font-medium mb-2">Product Name *</label>
                                 <input type="text" name="name" id="name"
                                     value="{{ old('name', $product->name) }}" required
                                     class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
                             </div> --}}
 
-                            {{-- <div class="mb-4">
+														{{-- <div class="mb-4">
                                 <label for="slug" class="block text-sm font-medium mb-2">Slug</label>
                                 <input type="text" name="slug" id="slug"
                                     value="{{ old('slug', $product->slug) }}" required
@@ -30,48 +30,48 @@
 
                             </div> --}}
 
-                            {{-- <div class="mb-4">
+														{{-- <div class="mb-4">
                                 <label for="price" class="block text-sm font-medium mb-2">Price *</label>
                                 <input type="number" step="0.1" name="price" id="price"
                                     value="{{ old('price', $product->price) }}" required
                                     class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
                             </div> --}}
-                            <label for="quantity" class="block text-sm font-medium mb-2">Quantity </label>
-                            <input type="number" step="1" name="quantity" id="quantity"
-                                value="{{ old('quantity', $orderItem->quantity) }}" required
-                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
-                            </input>
-                            <label for="color" class="block text-sm font-medium mb-2">Color</label>
-                            <input type="text" name="attributes[color]" id="color"
-                                value="{{ old('attributes.color', $orderItem->attributes['color'] ?? '') }}" required
-                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
+														<label for="quantity" class="block text-sm font-medium mb-2">Quantity </label>
+														<input type="number" step="1" name="quantity" id="quantity"
+																value="{{ old('quantity', $orderItem->quantity) }}" required
+																class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
+														</input>
+														<label for="color" class="block text-sm font-medium mb-2">Color</label>
+														<input type="text" name="attributes[color]" id="color"
+																value="{{ old('attributes.color', $orderItem->attributes['color'] ?? '') }}" required
+																class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
 
-                            <label for="size" class="block text-sm font-medium mb-2">Size</label>
-                            <select type="text" name="attributes[size]" id="size"required
-                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
-                                <option value="medium" {{ old('attributes.size') == 'medium' ? 'selected' : '' }}>medium
-                                </option>
-                                <option value="large" {{ old('attributes.size') == 'large' ? 'selected' : '' }}>large
-                                </option>
-                            </select>
-                            <label for="material" class="block text-sm font-medium mb-2">Material</label>
-                            <select type="text" name="attributes[material]" id="material" required
-                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
-                                <option value="wood" {{ old('attributes.material') == 'wood' ? 'selected' : '' }}>
-                                    wood
-                                </option>
-                                <option value="metal" {{ old('attributes.material') == 'metal' ? 'selected' : '' }}>
-                                    metal
-                                </option>
-                                <option value="plastic" {{ old('attributes.material') == 'plastic' ? 'selected' : '' }}>
-                                    plastic
-                                </option>
-                            </select>
-
-
+														<label for="size" class="block text-sm font-medium mb-2">Size</label>
+														<select type="text" name="attributes[size]" id="size"required
+																class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
+																<option value="medium" {{ old('attributes.size') == 'medium' ? 'selected' : '' }}>medium
+																</option>
+																<option value="large" {{ old('attributes.size') == 'large' ? 'selected' : '' }}>large
+																</option>
+														</select>
+														<label for="material" class="block text-sm font-medium mb-2">Material</label>
+														<select type="text" name="attributes[material]" id="material" required
+																class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 mb-5">
+																<option value="wood" {{ old('attributes.material') == 'wood' ? 'selected' : '' }}>
+																		wood
+																</option>
+																<option value="metal" {{ old('attributes.material') == 'metal' ? 'selected' : '' }}>
+																		metal
+																</option>
+																<option value="plastic" {{ old('attributes.material') == 'plastic' ? 'selected' : '' }}>
+																		plastic
+																</option>
+														</select>
 
 
-                            {{-- <div class="mb-4">
+
+
+														{{-- <div class="mb-4">
                                 <label for="status" class="block text-sm font-medium mb-2">Status </label>
                                 <select name="status" id="status" required
                                     class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
@@ -87,13 +87,13 @@
                                 </select>
                             </div> --}}
 
-                            {{-- <div class="mb-4">
+														{{-- <div class="mb-4">
                                 <label for="description" class="block text-sm font-medium mb-2">Description</label>
                                 <textarea name="description" id="description" rows="3"
                                     class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">{{ old('description', $product->description ?? '') }}</textarea>
                             </div> --}}
 
-                            {{-- <div class="mb-4">
+														{{-- <div class="mb-4">
                                 <label for="category_id" class="block text-sm font-medium mb-2">Category *</label>
                                 <select name="category_id" id="category_id" required
                                     class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
@@ -108,21 +108,20 @@
                                 </select>
                             </div> --}}
 
-                            <div class="flex space-x-3 mb-5">
-                                <button type="submit"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition">
-                                    Save Changes
+														<div class="flex space-x-3 mb-5">
+																<button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition">
+																		Save Changes
 
-                                </button>
-                                <a href="{{ route('orders.show', $order->order_code) }}"
-                                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
-                                    Cancel
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+																</button>
+																<a href="{{ route('orders.show', $order->order_code) }}"
+																		class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
+																		Cancel
+																</a>
+														</div>
+												</form>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
 </x-app-layout>

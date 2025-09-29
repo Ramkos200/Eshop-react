@@ -10,7 +10,7 @@
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat min-w-full">
 				<div class="py-2">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
 
 										<x-link-button href="{{ route('products.create', ['category_id' => $category ? $category->id : '']) }}"

@@ -6,8 +6,8 @@
 		</x-slot>
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-12">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
 										<div class="p-8 text-white">
 												<form action="{{ route('orders.store') }}" method="POST">

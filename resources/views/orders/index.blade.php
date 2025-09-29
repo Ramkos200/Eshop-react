@@ -6,8 +6,8 @@
 		</x-slot>
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-8">
-						<div class="max-w-7xl mx-auto sm:px-4 lg:px-6">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-4 lg:px-6">
 								<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
 										<x-link-button href="{{ route('orders.create') }}"> Create New Order</x-link-button>
 

@@ -23,8 +23,12 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        // dd($category);
+
         $categories = Category::all();
-        return view('categories.create', compact('categories'));
+        $category = null;
+        if (request()->has('category_id')) $category = Category::find(request('category_id'));
+        return view('categories.create', compact('categories', 'category'));
     }
 
     /**

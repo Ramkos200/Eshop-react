@@ -1,4 +1,4 @@
-<div class="hidden md:block bg-gray-800 shadow-md pt-5 relative" id="sidebar"
+<div class="hidden md:block bg-black shadow-md pt-5 relative" id="sidebar"
 		style="width: 256px; min-width: 200px; max-width: 400px; ">
 		<!-- Resize handle -->
 		<div
@@ -34,12 +34,12 @@
 				</a>
 				<a href="{{ route('products.index') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
-						<i class="fas fa-list mr-3 text-green-400"></i>
+						<i class="fas fa-th-list mr-3 text-green-400"></i>
 						Show all Products
 				</a>
 				<a href="{{ route('products.browse') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
-						<i class="fas fa-list mr-3 text-purple-400"></i>
+						<i class="fas fa-th-list mr-3 text-purple-400"></i>
 						Show all Variants
 				</a>
 

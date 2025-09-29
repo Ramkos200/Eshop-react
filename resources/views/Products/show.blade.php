@@ -6,7 +6,7 @@
 		</x-slot>
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-2">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 
 								<x-link-button href="{{ route('sku.create', $product) }}"> Add Product Variant
 								</x-link-button>

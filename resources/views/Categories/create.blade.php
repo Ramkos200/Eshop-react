@@ -6,15 +6,15 @@
 		</x-slot>
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-12">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
 										<div class="p-8 text-white">
 												<form action="{{ route('categories.store') }}" method="POST">
 														@csrf
 
 														<div class="mb-4">
-																<label for="name" class="block text-sm font-medium mb-2">Category Name </label>
+																<label for="name" class="block text-sm font-medium mb-2">Category Name</label>
 																<input type="text" name="name" id="name" required
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
 														</div>
@@ -33,24 +33,28 @@
 														</div>
 
 														<div class="mb-4">
-																<label for="parent_id" class="block text-sm font-medium mb-2">Parent Category (choose
-																		No Parent if it is a main category(*), or choose the parent category if it is
-																		subcategory)</label>
+																<label for="parent_id" class="block text-sm font-medium mb-2">
+																		Parent Category
+																		@if (isset($parentCategory))
+																				<span class="text-green-400 text-sm">(Pre-selected: {{ $parentCategory->name }})</span>
+																		@endif
+																</label>
 																<select name="parent_id" id="parent_id"
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
 																		<option value="">-- No Parent --</option>
-																		@foreach ($categories->where('parent_id', null) as $category)
-																				<option value="{{ $category->id }}">
-																						{{ $category->name }} *
+																		@foreach ($categories->where('parent_id', null) as $cat)
+																				<option value="{{ $cat->id }}"
+																						{{ isset($category) && $category->id == $cat->id ? 'selected' : '' }}>
+																						{{ $cat->name }} *
 																				</option>
-																				Subcategories
-																				@foreach ($category->children as $subcategory)
-																						<option value="{{ $subcategory->id }}">
+																				{{-- Subcategories --}}
+																				@foreach ($cat->children as $subcategory)
+																						<option value="{{ $subcategory->id }}"
+																								{{ isset($category) && $category->id == $subcategory->id ? 'selected' : '' }}>
 																								&nbsp;&nbsp;&nbsp;{{ $subcategory->name }}
 																						</option>
 																				@endforeach
 																		@endforeach
-
 																</select>
 														</div>
 
@@ -58,12 +62,11 @@
 																<button type="submit" class="px-4 py-2 rounded-md transition border">
 																		Create Category
 																</button>
-																<a href="{{ route('categories.index') }}" class=" px-4 py-2 rounded-md transition">
+																<a href="{{ route('categories.index') }}" class="px-4 py-2 rounded-md transition">
 																		Cancel
 																</a>
 														</div>
 												</form>
-
 										</div>
 								</div>
 						</div>

@@ -11,7 +11,7 @@
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat min-w-full">
 				<div class="py-2">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								@if (isset($order) && $order)
 										<!-- Back Button -->
 										<div class="mb-6">

@@ -1,26 +1,26 @@
-<nav class="bg-gray-800 shadow-md z-50">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="bg-black shadow-md z-50">
+		<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between h-16">
 						<!-- Logo -->
 						<div class="flex items-center">
 								<a href="{{ url('dashboard') }}" class="flex-shrink-0 flex items-center">
-										<i class="fas fa-lightbulb text-amber-500 text-2xl mr-2"></i>
-										<span class="font-['Cormorant_Garamond'] text-xl font-semibold text-white"> {{ env('APP_NAME') }}</span>
+										<i class="fas fa-lightbulb text-amber-500 text-3xl mr-2"></i>
+										<span class="font-['Cormorant_Garamond'] text-4xl font-semibold text-white"> {{ env('APP_NAME') }}</span>
 								</a>
 						</div>
 
 						<!-- Desktop Navigation -->
-						<div class="hidden md:flex items-center space-x-8">
+						<div class="hidden md:flex items-center space-x-20">
 								<a href="{{ route('categories.index') }}"
 										class="text-gray-300 hover:text-amber-400 transition duration-150">Categories</a>
 								<a href="{{ route('products.index') }}" class="text-gray-300 hover:text-amber-400 transition duration-150">All
 										Products</a>
-
 								<a href="{{ route('orders.index') }}"
 										class="text-gray-300 hover:text-amber-400 transition duration-150">Orders</a>
 								<a href="{{ route('products.index', 'trash') }}"
 										class="text-gray-300 hover:text-amber-400 transition duration-150">Deleted items</a>
-
+						</div>
+						<div class="flex inline-flex mt-4 space-x-2">
 								<!-- Search Bar -->
 								<form method="GET" action="{{ route('products.index') }}" class="w-full md:w-auto">
 										<div class="relative flex items-center ">
@@ -43,16 +43,16 @@
 								</a> --}}
 
 								<!-- User Profile -->
-								<div class="relative dropdown">
+								<div class="flex inline-flex dropdown">
 										<button class="flex items-center space-x-2 focus:outline-none">
-												<div class="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
+												<div class="h-8 w-8 rounded-full bg-white text-black flex items-center justify-center">
 														{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
 												</div>
 												<span class="text-gray-300">{{ Auth::user()->name }}</span>
 												<i class="fas fa-chevron-down text-xs text-gray-400"></i>
 										</button>
 										<div
-												class="dropdown-menu absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg py-1 z-50 hidden opacity-0 transition-opacity duration-300">
+												class="dropdown-menu absolute right-0 mt-12 mr-4 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-50 hidden opacity-0 transition-opacity duration-300">
 												<a href="{{ route('profile.edit') }}"
 														class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Profile</a>
 												<a href="{{ route('orders.index') }}"

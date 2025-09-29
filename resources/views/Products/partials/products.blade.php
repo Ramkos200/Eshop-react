@@ -176,7 +176,7 @@
 																		@else
 																				{{-- restore button --}}
 																				@include('products.partials.restore', [
-																						'action_route' => route('products.restore', $product->id),
+																						'action_route' => route('products.restore', $product),
 																				])
 																		@endif
 																		{{-- delete button --}}

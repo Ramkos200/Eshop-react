@@ -6,8 +6,8 @@
 		</x-slot>
 
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-12">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<!-- Back Button -->
 								<div class="mb-6">
 										<a href="{{ route('categories.index') }}"
@@ -39,7 +39,7 @@
 																				{{ $category->parent->name }}
 																		</a>
 																@else
-																		<span class="text-gray-500">No Parent (Main Category)</span>
+																		<span class="text-gray-500">Main Category</span>
 																@endif
 														</p>
 												</div>
@@ -68,13 +68,13 @@
 																		+ New Product
 																</x-link-button>
 														@else
-																<x-link-button href="{{ route('categories.create') }}">
+																<x-link-button href="{{ route('categories.create', ['category_id' => $category->id]) }}">
 																		+ New Category
 																</x-link-button>
 														@endif
 												@else
-														<x-link-button href="{{ route('categories.create') }}">
-																+ New Category
+														<x-link-button href="{{ route('categories.create', ['category_id' => $category->id]) }}">
+																++ New Category
 														</x-link-button>
 												@endif
 										</div>

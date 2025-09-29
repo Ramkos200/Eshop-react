@@ -11,11 +11,11 @@
 						class="inline-flex text-white text-lg">{{ __($order->user->name ?? json_decode($order->Customer)->name) }}</span>
 		</x-slot>
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-8">
-						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+				<div class="py-4">
+						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<x-link-button href="{{ route('orders.index') }}"> <- Back </x-link-button>
 												<x-link-button href="{{ route('orders.addProducts', $order) }}"> Add Product </x-link-button>
-								
+
 												<!-- Order Summary -->
 												<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6 mt-2">
 														<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-300">
