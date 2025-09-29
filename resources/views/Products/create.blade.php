@@ -29,8 +29,8 @@
 														</div>
 
 														<div class="mb-4">
-																<label for="price" class="block text-sm font-medium mb-2">Price *</label>
-																<input type="number" step="0.1" name="price" id="price" required
+																<label for="price" class="block text-sm font-medium mb-2 hidden">Price </label>
+																<input type="number" step="0.1" name="price" id="price" disabled hidden value="0"
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
 														</div>
 

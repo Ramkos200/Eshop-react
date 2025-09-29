@@ -1,3 +1,6 @@
+@if ($showTrash)
+		<span class="text-yellow-500 italic text-xl">Restore the product to edit it or see its variants</span>
+@endif
 <div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
 		<div class="overflow-x-auto min-w-full">
 				<table class="min-w-full divide-y divide-gray-700">
@@ -46,22 +49,7 @@
 												</a>
 										</th>
 										<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-												<a href="{{ request()->fullUrlWithQuery(['sort' => 'price', 'direction' => request('sort') === 'price' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
-														class="flex items-center group hover:text-white">
-														Price
-														<span class="ml-1 flex flex-col">
-																<svg
-																		class="w-3 h-3 fill-current {{ request('sort') === 'price' && request('direction') === 'asc' ? 'text-amber-500' : 'text-gray-500' }} group-hover:text-gray-300"
-																		viewBox="0 0 10 16" fill="currentColor">
-																		<path d="M5 14L0 9h10L5 14z" />
-																</svg>
-																<svg
-																		class="w-3 h-3 fill-current {{ request('sort') === 'price' && request('direction') === 'desc' ? 'text-amber-500' : 'text-gray-500' }} group-hover:text-gray-300"
-																		viewBox="0 0 10 16" fill="currentColor">
-																		<path d="M5 2L10 7H0L5 2z" />
-																</svg>
-														</span>
-												</a>
+												Price
 										</th>
 										<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
 												<a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => request('sort') === 'status' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
@@ -114,24 +102,31 @@
 														</div>
 												</td>
 												<td class="px-6 py-4 whitespace-nowrap">
-														<a href="{{ route('products.show', $product->slug) }}" class="text-white font-medium hover:underline">
-																{{ $product->name }}
-														</a>
+														@if (!$showTrash)
+																<a href="{{ route('products.show', $product->slug) }}" class="text-white font-medium hover:underline">
+																		{{ $product->name }}
+																</a>
+														@else
+																<div class="text-white"> {{ $product->name }}</div>
+														@endif
 														<div class="text-sm text-gray-400 mt-1">
 																variants: {{ $product->skus->count() }}
 														</div>
 												</td>
-												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap">
-																{{ Str::limit($product->description, 20) }}</div>
+												<td class="px-6 py-4 whitespace-nowrap text-white">
+														{{ Str::limit($product->description, 20) }}
 												</td>
-												<td class="px-6 py-4 max-w-xs">
-														<div class="text-sm text-gray-300 truncate whitespace-pre-wrap">
-																{{ $product->category->name ?? 'no Category' }}
-														</div>
-												</td>
+												@if ($product->category)
+														<td class="px-6 py-4 whitespace-nowrap text-white ">
+																{{ $product->category->name }}
+														</td>
+												@else
+														<td class="px-6 py-4 whitespace-nowrap text-red-500 ">
+																NO CATEGORY
+														</td>
+												@endif
 												<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-														${{ number_format($product->price, 2) }}
+														${{ number_format($product->skus->min('price'), 2) }}--${{ number_format($product->skus->max('price'), 2) }}
 												</td>
 												<td class="px-6 py-4 whitespace-nowrap">
 														<span

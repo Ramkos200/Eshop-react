@@ -27,9 +27,9 @@
 														</div>
 
 														<div class="mb-4">
-																<label for="price" class="block text-sm font-medium mb-2">Price *</label>
+																<label for="price" class="block text-sm font-medium mb-2">Price </label>
 																<input type="number" step="0.1" name="price" id="price"
-																		value="{{ old('price', $product->price) }}" required
+																		placeholder="${{ $product->skus->min('price') }}-${{ $product->skus->max('price') }}" disabled
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
 														</div>
 
@@ -57,7 +57,7 @@
 																<select name="category_id" id="category_id" required
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
 																		<option value="">Select Category</option>
-																		@foreach ($categories->whereNotNull('parent_id') as $category)
+																		@foreach ($grandchildcategory as $category)
 																				<option value="{{ $category->id }}"
 																						{{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
 																						{{ $category->name }}

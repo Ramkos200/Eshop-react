@@ -20,7 +20,7 @@ class ProductController extends Controller
         $perPage = 10;
 
         //  eager load 
-        $query->with('category');
+        $query->with('category', 'skus');
 
         // Handle products filter
         if ($request->has('products')) {
@@ -48,7 +48,7 @@ class ProductController extends Controller
         $sort = $request->get('sort', 'created_at');
         $direction = $request->get('direction', 'desc');
 
-        $products = $query->orderBy($sort, $direction)->paginate($perPage);
+        $products = $query->with('skus')->orderBy($sort, $direction)->paginate($perPage);
 
         return view('products.index', compact('products', 'showTrash', 'category'));
     }
@@ -58,6 +58,7 @@ class ProductController extends Controller
         //
         $categories = Category::all();
         $category = Category::find($request->category_id);
+
         return view('products.create', compact('category', 'categories'));
     }
 
@@ -70,7 +71,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             // 'slug' => 'required|string|max:255|unique:products,slug',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:1',
+            // 'price' => 'required|numeric|min:1',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id'
         ]);
@@ -83,7 +84,7 @@ class ProductController extends Controller
             'name' => $validated['name'],
             'slug' => $slug,
             'description' => $validated['description'],
-            'price' => $validated['price'],
+            'price' => 0,
             'status' => $validated['status'],
             'category_id' => $validated['category_id'],
         ]);
@@ -111,8 +112,10 @@ class ProductController extends Controller
         //
         // $product = Product::find($product_id);
         $categories = Category::all();
+        $grandchildcategory = Category::whereHas('parent.parent')->get();
+
         session(['previous_url' => url()->previous()]);
-        return view('products.edit', compact('product', 'categories'));
+        return view('products.edit', compact('product', 'categories', 'grandchildcategory'));
     }
 
     /**
@@ -125,7 +128,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:1',
+            // 'price' => 'required|numeric|min:1',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id'
         ]);
