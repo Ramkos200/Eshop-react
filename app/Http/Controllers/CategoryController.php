@@ -15,7 +15,12 @@ class CategoryController extends Controller
     public function index()
     {
 
-        return view('categories.index')->with('categories', Category::orderBy('created_at', 'desc')->get());
+        $categories = Category::with(['children.children'])
+            ->whereNull('parent_id')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('categories.index', compact('categories'));
     }
 
     /**

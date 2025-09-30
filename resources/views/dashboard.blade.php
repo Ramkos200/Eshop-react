@@ -5,20 +5,9 @@
 								<h1 class="text-2xl font-bold text-white dark:text-white">{{ __('Dashboard') }}</h1>
 								<p class="text-white dark:text-white mt-1">{{ __('Welcome to the dashboard') }}</p>
 						</div>
-
-						<!-- Cache clear button (optional) -->
-						@if (auth()->user()->role === 'admin')
-								<form action="{{ route('dashboard.clear-cache') }}" method="POST" class="inline">
-										@csrf
-										<button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">
-												🔄 Clear Cache
-										</button>
-								</form>
-						@endif
 				</div>
 		</div>
 
-		<!-- Stats Grid -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
 				<!-- Orders Card -->
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
@@ -36,12 +25,12 @@
 										</div>
 								</div>
 								<div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-										<!-- SVG remains same -->
+										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 
-				<!-- Orders Amount Card -->
+				<!-- Revenue Card -->
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<div class="flex items-center justify-between">
 								<div>
@@ -50,16 +39,11 @@
 												${{ number_format($totalOrdersAmount, 2) }}
 										</p>
 										<p class="text-xs text-green-500 flex items-center mt-1">
-												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
-														stroke="currentColor">
-														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-																d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-												</svg>
 												Recent (7d): ${{ number_format($recentRevenue ?? 0, 2) }}
 										</p>
 								</div>
 								<div class="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-										<!-- SVG remains same -->
+										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
@@ -75,7 +59,7 @@
 										</p>
 								</div>
 								<div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-										<!-- SVG remains same -->
+										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
@@ -91,13 +75,12 @@
 										</p>
 								</div>
 								<div class="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
-										<!-- SVG remains same -->
+										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 		</div>
 
-		<!-- Recent Activity Section -->
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 				<!-- Recent Orders Summary -->
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">

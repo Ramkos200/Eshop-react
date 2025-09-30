@@ -150,16 +150,18 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $previousUrl = url()->previous();
         $product = Product::withTrashed()->findOrFail($id);
+
         if ($product->trashed()) {
+            if ($product->skus()->exists() || $product->orderItems()->exists()) {
+                return redirect()->back()->with('error', 'Cannot permanently delete product with existing orders or SKUs.');
+            }
             $product->forceDelete();
+            return redirect()->back()->with('success', 'Product permanently deleted.');
         } else {
-            $product->category_id = null;
-            $product->save();
             $product->delete();
+            return redirect()->back()->with('success', 'Product moved to trash.');
         }
-        return redirect()->to($previousUrl);
     }
 
     public function restore($id)

@@ -21,12 +21,13 @@ class OrderController extends Controller
     //for search
     $query = Order::with('user');
     if ($request->has('search') && !empty($request->search)) {
-      $query->where('order_code', 'like', '%' . $request->search . '%')
-        ->orWhereHas('user', function ($query) use ($request) {
-          $query->where('email', 'like', '%' . $request->search . '%');
-        })->orWhereHas('user', function ($query) use ($request) {
-          $query->where('name', 'like', '%' . $request->search . '%');
-        })->get();
+      $query->where(function ($q) use ($request) {
+        $q->where('order_code', 'like', '%' . $request->search . '%')
+          ->orWhereHas('user', function ($userQuery) use ($request) {
+            $userQuery->where('email', 'like', '%' . $request->search . '%')
+              ->orWhere('name', 'like', '%' . $request->search . '%');
+          });
+      });
     }
     $orders = $query->orderBy('created_at', 'desc')->paginate(10);
     return view('orders.index', compact('orders'));

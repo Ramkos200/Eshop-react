@@ -25,7 +25,7 @@
 																				SKU Code
 																		</th>
 																		<th scope="col"
-																				class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+																				class="px-6 py-3 text-left text-xs font-medium text-green-300 uppercase tracking-wider">
 																				Price
 																		</th>
 																		<th scope="col"
@@ -54,7 +54,7 @@
 																				<td class="px-6 py-4 whitespace-nowrap">
 																						<div class="text-sm text-white">{{ $sku->code }}</div>
 																				</td>
-																				<td class="px-6 py-4 text-sm text-white whitespace-nowrap">
+																				<td class="px-6 py-4 text-sm text-green-500 whitespace-nowrap">
 																						${{ number_format($sku->price, 2) }}
 																				</td>
 																				<td class="px-6 py-4 whitespace-nowrap text-sm text-white	">
