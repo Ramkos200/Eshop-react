@@ -55,9 +55,16 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        //
         $categories = Category::all();
-        $category = Category::find($request->category_id);
+        $category = null;
+
+        if ($request->has('category_id')) {
+            $category = Category::find($request->category_id);
+        } elseif ($request->has('category')) {
+            $category = Category::where('slug', $request->category)->first();
+        };
+
+
 
         return view('products.create', compact('category', 'categories'));
     }

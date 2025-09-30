@@ -64,7 +64,7 @@
 										<div class="flex space-x-3">
 												@if ($category->children->count() === 0)
 														@if ($category->parent_id !== null && $category->parent->parent_id !== null)
-																<x-link-button href="{{ route('products.create') }}">
+																<x-link-button href="{{ route('products.create', ['category_id' => $category->id]) }}">
 																		+ New Product
 																</x-link-button>
 														@else

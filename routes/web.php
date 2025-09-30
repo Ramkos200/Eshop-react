@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'admin'])
     ->name('dashboard');
 
 
@@ -31,7 +31,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearCache'])
+    ->middleware(['auth', 'admin'])
+    ->name('dashboard.clear-cache');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

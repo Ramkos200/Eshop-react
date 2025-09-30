@@ -59,13 +59,12 @@
 																<label for="category_id" class="block text-sm font-medium mb-2">Category *</label>
 																<select name="category_id" id="category_id" required
 																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white">
-																		<option value="">{{ $category ? $category->name : 'Select Category' }}</option>
-																		@foreach ($categories->whereNotNull('parent_id') as $category)
-																				@if ($category->children->count() === 0)
-																						<option value="{{ $category->id }}">
-																								{{ $category->name }}
-																						</option>
-																				@endif
+																		<option value="">Select a category</option>
+																		@foreach ($categories as $cat)
+																				<option value="{{ $cat->id }}"
+																						{{ $category && $category->id == $cat->id ? 'selected' : (old('category_id') == $cat->id ? 'selected' : '') }}>
+																						{{ $cat->name }}
+																				</option>
 																		@endforeach
 																</select>
 														</div>

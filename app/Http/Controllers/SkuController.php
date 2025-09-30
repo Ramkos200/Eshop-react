@@ -32,12 +32,12 @@ class SkuController extends Controller
     {
 
         $validated = $request->validate([
-            'price' => 'required|numeric|min:1',
-            'inventory' => 'required|numeric|min:1',
+            'price' => 'required|numeric|min:0.1',
+            'inventory' => 'required|numeric|min:0',
             // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-            'color' => 'required|string',
-            'size' => 'required|string',
-            'material' => 'required|string',
+            'color' => 'required|string|max:50',
+            'size' => 'required|string|max:50',
+            'material' => 'required|string|max:50',
 
         ]);
         $categoryCode = substr(strtoupper($product->category->name ?? 'GEN'), 0, 3);
@@ -112,9 +112,16 @@ class SkuController extends Controller
      */
     public function destroy(Sku $sku)
     {
-        //
+        // variant in order
+        if ($sku->orderItems()->exists()) {
+            $orderCount = $sku->orderItems()->count();
+            return redirect()->back()
+                ->with('error', "Cannot delete this variant because it is used in $orderCount order(s).");
+        }
         $previousUrl = url()->previous();
         $sku->delete();
-        return redirect()->to($previousUrl);
+
+        return redirect()->to($previousUrl)
+            ->with('success', 'Variant deleted successfully!');
     }
 }

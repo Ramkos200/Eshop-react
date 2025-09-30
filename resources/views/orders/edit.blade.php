@@ -48,8 +48,8 @@
 														</div>
 														<div class="grid grid-cols-1 gap-2 text-sm">
 																<div>
-																		<label for="street" class="text-gray-300">Street Address *</label>
-																		<input type="text" name="street" id="street" required
+																		<label for="street_address" class="text-gray-300">Street Address *</label>
+																		<input type="text" name="street_address" id="street_address" required
 																				class="w-full bg-gray-600 border border-gray-500 text-white rounded-md px-2 py-1">
 																</div>
 																<div class="grid grid-cols-2 gap-2">
