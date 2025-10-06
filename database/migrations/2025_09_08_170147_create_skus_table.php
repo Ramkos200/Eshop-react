@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('skus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained();
             $table->string('code')->unique();
             $table->float('price');
-            $table->integer('inventory');
+            $table->unsignedInteger('inventory')->default(0);
             $table->json('attributes');
             $table->timestamps();
         });

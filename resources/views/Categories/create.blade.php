@@ -58,7 +58,8 @@
 																</select>
 														</div>
 
-														<div class="flex space-x-3 mb-5">
+
+														<div class="flex space-x-3 mb-5 mt-5">
 																<button type="submit" class="px-4 py-2 rounded-md transition border">
 																		Create Category
 																</button>
@@ -67,6 +68,9 @@
 																</a>
 														</div>
 												</form>
+												{{-- Image Upload Field
+												<x-image-upload-simplified :model="Category::class" :modelId="0" type="main" label="Category Image"
+														:required="true" description="Upload the main image for this category" /> --}}
 										</div>
 								</div>
 						</div>

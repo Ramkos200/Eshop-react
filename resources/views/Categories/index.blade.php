@@ -17,7 +17,7 @@
 										</x-link-button>
 								</div>
 
-								<!-- Categories Table -->
+								{{-- Categories Table --}}
 								<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
 										<div class="overflow-x-auto">
 												<table class="min-w-full divide-y divide-gray-700">
@@ -97,14 +97,19 @@
 																						<div class="space-y-4">
 																								@foreach ($category->children as $subcategory)
 																										@php
-																												$Catproducts = [];
-																												foreach ($subcategory->children as $child) {
-																												    $Catproducts = array_merge($Catproducts, $child->products->all());
-																												    $productIds = array_map(function ($product) {
-																												        return $product->id;
-																												    }, $Catproducts);
+																												$productIds = [];
+																												if ($subcategory->children->count() > 0) {
+																												    foreach ($subcategory->children as $child) {
+																												        if ($child->products->count() > 0) {
+																												            foreach ($child->products as $product) {
+																												                $productIds[] = $product->id;
+																												            }
+																												        }
+																												    }
 																												}
+																												$productIds = array_unique($productIds);
 																										@endphp
+
 																										<div class="h-8 flex items-center min-h-[110px]">
 																												@if (!empty($productIds))
 																														<a href="{{ route('products.index', ['products' => $productIds]) }}"
@@ -123,12 +128,12 @@
 																				</td>
 																				<td class="px-6 py-4 whitespace-nowrap text-right align-top">
 																						<div class="flex justify-end space-x-2">
-																								<!-- edit icon -->
+																								{{-- edit icon --}}
 																								@include('products.partials.edit', [
 																										'action_route' => route('categories.edit', $category->id),
 																								])
 
-																								<!--  category delete icon -->
+																								{{--  category delete icon --}}
 																								<form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
 																										@csrf
 																										@method('DELETE')

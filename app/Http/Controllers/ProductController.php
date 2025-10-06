@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use Database\Seeders\CategorySeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -55,7 +54,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::whereHas('parent.parent')->get();
         $category = null;
 
         if ($request->has('category_id')) {
@@ -63,7 +62,6 @@ class ProductController extends Controller
         } elseif ($request->has('category')) {
             $category = Category::where('slug', $request->category)->first();
         };
-
 
 
         return view('products.create', compact('category', 'categories'));
@@ -76,9 +74,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            // 'slug' => 'required|string|max:255|unique:products,slug',
             'description' => 'nullable|string',
-            // 'price' => 'required|numeric|min:1',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id'
         ]);
@@ -87,7 +83,7 @@ class ProductController extends Controller
             $newslug = $slug . '-' . rand(1, 99);
             $slug = 'SKU-' . $newslug;
         }
-        Product::create([
+        $product = Product::create([
             'name' => $validated['name'],
             'slug' => $slug,
             'description' => $validated['description'],
@@ -96,7 +92,7 @@ class ProductController extends Controller
             'category_id' => $validated['category_id'],
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully!');
+        return redirect()->route('products.index', ['category_id' =>  $product->category->id])->with('success', 'Product created successfully!');
     }
 
     /**
@@ -117,7 +113,6 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         //
-        // $product = Product::find($product_id);
         $categories = Category::all();
         $grandchildcategory = Category::whereHas('parent.parent')->get();
 
@@ -133,14 +128,12 @@ class ProductController extends Controller
         //
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
+            'slug' => 'required|string|max:255' . ($request->slug !== $product->slug ? '|unique:products,slug,' . $product->id : ''),
             'description' => 'nullable|string',
-            // 'price' => 'required|numeric|min:1',
             'status' => 'required|string',
             'category_id' => 'required|exists:categories,id'
         ]);
         $product->update($validated);
-        // return redirect()->route('products.show', $product->slug);
         return redirect(session('previous_url', route('products.show', $product->slug)))
             ->with('success', 'Product updated successfully!');
     }
@@ -151,14 +144,17 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::withTrashed()->findOrFail($id);
-
         if ($product->trashed()) {
-            if ($product->skus()->exists() || $product->orderItems()->exists()) {
-                return redirect()->back()->with('error', 'Cannot permanently delete product with existing orders or SKUs.');
+
+            if ($product->skus()->exists()) {
+                return redirect()->route('products.index', ['trash' => true])->with('error', 'Cannot permanently delete product with existing orders or SKUs.');
             }
+            // $product->skus()->withTrashed()->forceDelete();
             $product->forceDelete();
-            return redirect()->back()->with('success', 'Product permanently deleted.');
+            return redirect()->route('products.index', ['trash' => true])->with('success', 'Product permanently deleted.');
         } else {
+            $categoryID = $product->category->id ?? '';
+            $product->update(['category_id' => null]);
             $product->delete();
             return redirect()->back()->with('success', 'Product moved to trash.');
         }

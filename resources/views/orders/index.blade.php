@@ -19,7 +19,7 @@
 										</div>
 								</div>
 
-								<!-- Orders Table -->
+								{{-- Orders Table --}}
 								<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden mt-3">
 										<div class="overflow-x-auto">
 												<table class="min-w-full divide-y divide-gray-700">
@@ -160,7 +160,7 @@
 												</table>
 										</div>
 
-										<!-- Pagination -->
+										{{-- Pagination --}}
 										@if ($orders->hasPages())
 												<div class="bg-gray-700/50 px-6 py-4 border-t border-gray-600">
 														<div class="flex items-center justify-between">

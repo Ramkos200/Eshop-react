@@ -18,8 +18,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
             $table->float('total_amount');
             $table->text('notes')->nullable();
+            $table->string('payment')->nullable();
             $table->json('shipping_address');
-            $table->json('billing_address');
             $table->timestamps();
         });
     }

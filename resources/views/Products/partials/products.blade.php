@@ -3,6 +3,18 @@
 @endif
 <div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
 		<div class="overflow-x-auto min-w-full">
+
+				{{-- session Messages --}}
+				@if (session('success'))
+						<div class="bg-green-500/40 border border-green-600 rounded-lg p-3">
+								<p class="text-white text-sm">{{ session('success') }}</p>
+						</div>
+				@endif
+				@if (session('error'))
+						<div class="bg-red-500/40 border border-red-600 rounded-lg p-3">
+								<p class="text-white text-sm">{{ session('error') }}</p>
+						</div>
+				@endif
 				<table class="min-w-full divide-y divide-gray-700">
 						<thead class="bg-gray-700/50">
 								<tr>
@@ -97,8 +109,14 @@
 										<tr class="hover:bg-gray-700/30 transition-colors duration-150">
 												<td class="px-6 py-4 whitespace-nowrap">
 														<div class="h-12 w-12 rounded overflow-hidden">
-																<img src="{{ asset('/product-images/' . $product->slug . '.jpg') }}" alt="{{ $product->slug }}"
-																		class="h-full w-full object-cover">
+																@if ($product->mainImage)
+																		<img src="{{ Storage::url($product->mainImage->path) }}" alt="{{ $product->mainImage->alt_text }}"
+																				class="h-full w-full object-cover">
+																@else
+																		<div class="h-full w-full bg-gray-600 flex items-center justify-center">
+																				<span class="text-white text-xs">No Image</span>
+																		</div>
+																@endif
 														</div>
 												</td>
 												<td class="px-6 py-4 whitespace-nowrap">
@@ -176,7 +194,7 @@
 																		@endif
 																		{{-- delete button --}}
 																		@include('products.partials.delete', [
-																				'action_route' => route('products.destroy', $product),
+																				'action_route' => route('products.destroy', $product->id),
 																		])
 																</div>
 														</td>
@@ -193,7 +211,7 @@
 				</table>
 		</div>
 
-		<!-- Pagination -->
+		{{-- Pagination --}}
 		@if ($products->hasPages())
 				<div class="px-6 py-4 bg-gray-700/50 border-t border-gray-700">
 						<div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">

@@ -5,10 +5,22 @@
 				</h2>
 		</x-slot>
 
+		{{-- session Messages --}}
+		@if (session('success'))
+				<div class="bg-green-500/40 border border-green-600 rounded-lg p-3">
+						<p class="text-white text-sm">{{ session('success') }}</p>
+				</div>
+		@endif
+		@if (session('error'))
+				<div class="bg-red-500/40 border border-red-600 rounded-lg p-3">
+						<p class="text-white text-sm">{{ session('error') }}</p>
+				</div>
+		@endif
+
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-4">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-								<!-- Back Button -->
+								{{-- Back Button --}}
 								<div class="mb-6">
 										<a href="{{ route('categories.index') }}"
 												class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
@@ -19,12 +31,18 @@
 												Back to Categories
 										</a>
 								</div>
+								{{-- Edit Category Button --}}
 								<a href="{{ route('categories.edit', $category->id) }}"
-										class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150 ml-2 mt-3 mb-3"
+										class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-gray-900 transition ease-in-out duration-150 ml-2 mt-3 mb-3"
 										title="Edit Category">
 										Edit Category
 								</a>
-								<!-- Category Details Card -->
+								{{-- Image Upload Section --}}
+								<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6">
+										<x-image-gallery :images="$category->images" title="Category Images" :showSummary="true" :showEmptyState="true" />
+								</div>
+
+								{{-- Category Details Card --}}
 								<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6">
 										<div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-300">
 												<div>
@@ -49,8 +67,7 @@
 																<p class="mb-2"><span class="text-gray-400">Subcategories:</span> {{ $category->children->count() }}
 																</p>
 														@endif
-														<p class="mb-2"><span class="text-gray-400">Direct Products:</span> {{ $category->products->count() }}
-														</p>
+
 														<p class="mb-2"><span class="text-gray-400">Description:</span></p>
 														<p class="text-gray-300 bg-gray-700/30 p-3 rounded-md">
 																{{ $category->description ?? 'No description provided' }}
@@ -58,8 +75,7 @@
 												</div>
 										</div>
 								</div>
-
-								<!-- Action Buttons -->
+								{{-- Action Buttons --}}
 								<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
 										<div class="flex space-x-3">
 												@if ($category->children->count() === 0)
@@ -84,7 +100,7 @@
 														@csrf
 														@method('DELETE')
 														<button type="submit"
-																class="inline-flex items-center px-4 py-2 bg-red-600/20 backdrop-blur-md border border-red-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-red-700/30 hover:border-red-500/50 focus:bg-red-700/30 active:bg-red-800/40 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 transition ease-in-out duration-150"
+																class="inline-flex items-center px-4 py-2 bg-red-600/20 backdrop-blur-md border border-red-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-red-700/30 hover:border-red-500/50 focus:bg-red-700/30 active:bg-red-800/40 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-gray-900 transition ease-in-out duration-150"
 																title="Delete Category" onclick="return confirm('Are you sure you want to delete this category?')">
 																Delete Category
 														</button>
@@ -102,9 +118,9 @@
 										@endif
 								</div>
 
-								<!-- Subcategories Section -->
+								{{-- Subcategories Section --}}
 								@if ($category->parent_id === null || ($category->parent_id !== null && $category->parent->parent_id === null))
-										<!-- Only show for main categories and direct children (not grandchildren) -->
+										{{-- Only show for main categories and direct children (not grandchildren) --}}
 										<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
 												<div class="px-6 py-4 bg-gray-700/50 border-b border-gray-700">
 														<h3 class="text-lg font-semibold text-white">
@@ -127,7 +143,7 @@
 																		@foreach ($category->children as $subcategory)
 																				<div
 																						class="bg-gray-700/30 backdrop-blur-sm border border-gray-600/50 rounded-lg p-6 hover:bg-gray-700/50 transition-colors duration-200">
-																						<!-- Main subcategory header -->
+																						{{-- Main subcategory header --}}
 																						<div class="flex justify-between items-start mb-4">
 																								<div>
 																										<a href="{{ route('categories.show', $subcategory->slug) }}"
@@ -156,7 +172,7 @@
 																								</div>
 																						</div>
 
-																						<!-- Child subcategories -->
+																						{{-- Child subcategories --}}
 																						@if ($subcategory->children->isNotEmpty())
 																								<div class="mt-4">
 																										<h5 class="text-sm font-medium text-gray-400 mb-3">Subcategories:</h5>
@@ -166,8 +182,8 @@
 																																class="bg-gray-600/30 hover:bg-gray-600/50 p-3 rounded-md transition-colors duration-150">
 																																<div class="text-sm text-white font-medium">{{ $child->name }}</div>
 																																<div class="text-xs text-gray-400 mt-1">
-																																		Products: {{ $child->products->count() }} |
-																																		Subcategories: {{ $child->children->count() }}
+																																		Products: {{ $child->products->count() }}
+																																		{{-- Subcategories: {{ $child->children->count() }} --}}
 																																</div>
 																														</a>
 																												@endforeach
@@ -175,7 +191,7 @@
 																								</div>
 																						@endif
 
-																						<!-- Direct products in this subcategory -->
+																						{{-- Direct products in this subcategory --}}
 																						@if ($subcategory->products->isNotEmpty())
 																								<div class="mt-4">
 																										<h5 class="text-sm font-medium text-gray-400 mb-3">Direct Products:</h5>
@@ -184,7 +200,7 @@
 																														<a href="{{ route('products.show', $product->slug) }}"
 																																class="flex items-center justify-between bg-gray-600/20 hover:bg-gray-600/40 p-2 rounded-md transition-colors duration-150">
 																																<span class="text-sm text-white">{{ $product->name }}</span>
-																																<span class="text-xs text-green-400">${{ number_format($product->price, 2) }}</span>
+																																{{-- <span class="text-xs text-green-400">${{ number_format($product->price, 2) }}</span> --}}
 																														</a>
 																												@endforeach
 																										</div>
@@ -192,7 +208,7 @@
 																						@endif
 																				</div>
 
-																				<!-- Separator between subcategories -->
+																				{{-- Separator between subcategories --}}
 																				@if (!$loop->last)
 																						<hr class="border-gray-600/30 my-2">
 																				@endif
@@ -201,15 +217,15 @@
 														@endif
 												</div>
 										</div>
-								@endif>
+								@endif
 
-								<!-- Direct Products Section (if this category has direct products) -->
+								{{-- Direct Products Section (if this category has direct products) --}}
 								@if ($category->products->count() > 0)
 										<div
 												class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden mt-6">
-												<div class="px-6 py-4 bg-gray-700/50 border-b border-gray-700 hover:underline">
+												<div class="px-6 py-4 bg-gray-700/50 border-b border-gray-700">
 														<a href="{{ route('products.index', ['category_id' => $category->id]) }}"
-																class="inline-flex items-left px-4 py-2 bg-green-600/20 backdrop-blur-md border border-green-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-green-700/30 hover:border-green-500/50 focus:bg-green-700/30 active:bg-green-800/40 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:ring-offset-2 transition ease-in-out duration-150 ml-2">
+																class="inline-flex items-center px-4 py-2 bg-green-600/20 backdrop-blur-md border border-green-500/30 rounded-lg font-['Inter'] text-sm text-white uppercase tracking-widest hover:bg-green-700/30 hover:border-green-500/50 focus:bg-green-700/30 active:bg-green-800/40 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:ring-offset-2 focus:ring-offset-gray-900 transition ease-in-out duration-150">
 																Category's Direct Products ({{ $category->products->count() }})
 														</a>
 												</div>
@@ -219,7 +235,7 @@
 																		<a href="{{ route('products.show', $product->slug) }}"
 																				class="bg-gray-700/30 hover:bg-gray-700/50 p-4 rounded-md transition-colors duration-150">
 																				<div class="text-white font-medium">{{ $product->name }}</div>
-																				<div class="text-sm text-gray-400 mt-1">${{ number_format($product->price, 2) }}</div>
+																				{{-- <div class="text-sm text-gray-400 mt-1">${{ number_format($product->price, 2) }}</div> --}}
 																		</a>
 																@endforeach
 														</div>

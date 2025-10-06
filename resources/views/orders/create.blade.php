@@ -10,12 +10,18 @@
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
 										<div class="p-8 text-white">
-
-												<!-- Display Validation Errors -->
+												{{-- errors --}}
 												@if ($errors->any())
 														<div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-																<div class="text-red-300 font-medium mb-2">Please fix the following errors:</div>
-																<ul class="list-disc list-inside text-red-200 text-sm">
+																<div class="flex items-center">
+																		<svg class="w-5 h-5 mr-2 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+																				<path fill-rule="evenodd"
+																						d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+																						clip-rule="evenodd" />
+																		</svg>
+																		<span class="text-red-300 font-medium">Please fix the following errors:</span>
+																</div>
+																<ul class="mt-2 list-disc list-inside text-red-200 text-sm">
 																		@foreach ($errors->all() as $error)
 																				<li>{{ $error }}</li>
 																		@endforeach
@@ -26,7 +32,7 @@
 												<form action="{{ route('orders.store') }}" method="POST">
 														@csrf
 
-														<!-- Customer Information -->
+														{{-- Customer Information --}}
 														<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 																<div>
 																		<label for="username" class="block text-sm font-medium mb-2">Customer Full Name *</label>
@@ -46,7 +52,7 @@
 																</div>
 														</div>
 
-														<!-- Order Information -->
+														{{-- Order Information --}}
 														<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 																<div>
 																		<label for="status" class="block text-sm font-medium mb-2">Order Status *</label>
@@ -72,7 +78,7 @@
 																</div>
 														</div>
 
-														<!-- Shipping Address -->
+														{{-- Shipping Address --}}
 														<div class="mb-6">
 																<h3 class="text-lg font-medium text-white mb-4">Shipping Address</h3>
 																<div class="grid grid-cols-1 gap-4">
@@ -125,7 +131,7 @@
 																</div>
 														</div>
 
-														<!-- Form Actions -->
+														{{-- Form Actions --}}
 														<div class="flex space-x-3">
 																<button type="submit"
 																		class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition font-medium">

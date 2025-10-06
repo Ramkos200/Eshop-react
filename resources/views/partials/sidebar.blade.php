@@ -1,6 +1,6 @@
 <div class="hidden md:block bg-black shadow-md pt-5 relative" id="sidebar"
 		style="width: 256px; min-width: 200px; max-width: 400px; ">
-		<!-- Resize handle -->
+		{{-- Resize handle --}}
 		<div
 				class="absolute right-0 top-0 h-full w-2 cursor-col-resize bg-gray-700 hover:bg-yellow-800 transition-colors duration-200"
 				id="sidebar-resize-handle"></div>
@@ -37,20 +37,22 @@
 						<i class="fas fa-th-list mr-3 text-green-400"></i>
 						Show all Products
 				</a>
-				<a href="{{ route('products.browse') }}"
+				<a href="{{ route('variants.browse') }}"
 						class="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-700 rounded-lg">
 						<i class="fas fa-th-list mr-3 text-purple-400"></i>
 						Show all Variants
 				</a>
 
-
-				<!-- Dynamic Categories Section -->
 				<div class="mt-4">
 						<h3 class="text-sm font-semibold text-gray-400 uppercase px-2 mb-2">Product Categories</h3>
 
 						@php
-								// Get main categories (parent_id is null) with their children and grandchildren
-								$mainCategories = \App\Models\Category::with(['children.children'])
+								$mainCategories = \App\Models\Category::with([
+								    'children.children.products',
+								    'children.children' => function ($query) {
+								        $query->withCount('products');
+								    },
+								])
 								    ->where('parent_id', null)
 								    ->orderBy('created_at', 'desc')
 								    ->get();
@@ -58,7 +60,7 @@
 
 						@foreach ($mainCategories as $category)
 								<div class="category-group mb-1">
-										<!-- Parent Category -->
+										{{-- Parent Category  --}}
 										<div
 												class="flex items-center justify-between px-3 py-2 text-gray-300 hover:bg-gray-700 rounded-lg cursor-pointer"
 												onclick="toggleSubcategories('cat{{ $category->id }}')">
@@ -72,7 +74,7 @@
 												@endif
 										</div>
 
-										<!-- Children Subcategories -->
+										{{-- Children Subcategories --}}
 										@if ($category->children->count() > 0)
 												<div class="subcategory-transition overflow-hidden ml-4 pl-2 border-l border-gray-600"
 														id="subcategories-cat{{ $category->id }}" style="display: none;">
@@ -91,7 +93,7 @@
 																				@endif
 																		</div>
 
-																		<!-- Grandchildren Categories -->
+																		{{-- Grandchildren Categories --}}
 																		@if ($subcategory->children->count() > 0)
 																				<div class="subcategory-transition overflow-hidden ml-4 pl-2 border-l border-gray-600"
 																						id="subcategories-subcat{{ $subcategory->id }}" style="display: none;">

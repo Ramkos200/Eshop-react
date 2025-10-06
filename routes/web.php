@@ -6,21 +6,23 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkuController;
-use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\ImgController;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified', 'admin'])
-    ->name('dashboard');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+// Route::get('/dashboard', [DashboardController::class, 'index'])
+//     ->middleware(['auth', 'verified', 'admin'])
+//     ->name('dashboard');
 
 
 // Route::get('/dashboard', function () {
@@ -29,11 +31,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 //         return redirect('/');
 //     }
 //     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// })->middleware(['admin'])->name('dashboard');
 
-Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearCache'])
-    ->middleware(['auth', 'admin'])
-    ->name('dashboard.clear-cache');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,8 +41,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-Route::middleware('auth')->group(function () {
-
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //aditional routes
     Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::patch('/orders/{order}/address', [OrderController::class, 'updateAddress'])->name('orders.updateAddress');
@@ -57,7 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/finalize', [OrderController::class, 'finalizeOrder'])->name('orders.finalize');
     Route::get('/skus/create/{product:slug}', [SkuController::class, 'create'])->name('sku.create');
     Route::post('/skus/store/{product:slug}', [SkuController::class, 'store'])->name('skus.store');
-    Route::get('/products/browse', [OrderController::class, 'addProducts'])->name('products.browse');
+    Route::get('/variants/browse', [OrderController::class, 'addProducts'])->name('variants.browse');
+
 
     //the remaining of resources routes
     Route::resource('/categories', CategoryController::class);
@@ -65,4 +65,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/skus', SkuController::class)->except('create', 'store');
     Route::resource('/orders', OrderController::class);
     Route::resource('/orderItem', OrderItemController::class);
+    Route::post('/img', [ImgController::class, 'store'])->name('img.store');
+    Route::put('/img/{img}', [ImgController::class, 'update'])->name('img.update');
+    Route::delete('/img/{img}', [ImgController::class, 'destroy'])->name('img.destroy');
+    Route::post('/img/{img}/set-main', [ImgController::class, 'setAsMain'])->name('img.set-main');
+    Route::post('/orders/{order}/upload-receipt', [OrderController::class, 'uploadReceipt'])->name('orders.uploadReceipt');
+    Route::delete('/orders/{order}/delete-receipt/{img}', [OrderController::class, 'deleteReceipt'])->name('orders.deleteReceipt');
 });

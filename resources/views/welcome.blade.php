@@ -6,13 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title> {{ env('APP_NAME') }}</title>
 
-		<!-- Fonts -->
+		{{-- Fonts --}}
 		<link rel="preconnect" href="https://fonts.bunny.net">
 		<link
 				href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|cormorant-garamond:300,400,500,600|inter:300,400,500"
 				rel="stylesheet" />
 
-		<!-- Styles / Scripts -->
+		{{-- Styles / Scripts --}}
 		@if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
 				@vite(['resources/css/app.css', 'resources/js/app.js'])
 		@endif
@@ -21,11 +21,11 @@
 <body class="min-h-screen bg-cover bg-center bg-no-repeat"
 		style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('images/welcome-dashboard-picture.jpg') }}')">
 
-		<!-- Hero Section -->
+		{{-- Hero Section --}}
 		<div class="min-h-screen flex items-center justify-center p-6 lg:p-8">
 				<div class="text-center text-white max-w-4xl">
 
-						<!-- Main Content -->
+						{{-- Main Content --}}
 						<div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8 lg:p-12 mx-auto max-w-2xl">
 								<h1
 										class="font-['Cormorant_Garamond'] text-3xl lg:text-5xl font-light mb-6 text-white text-shadow-lg shadow-white/10">
@@ -38,7 +38,7 @@
 										Discover our collection of HIGH QUALITY PRODUCTS designed to create your satisfaction and taste.
 								</p>
 
-								<!-- Call to Action Buttons -->
+								{{-- Call to Action Buttons --}}
 								<div class="flex flex-col gap-3 justify-center items-center">
 										<div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
 												<a href="{{ route('login') }}"
@@ -50,16 +50,10 @@
 														Register & Begin Your Journey
 												</a>
 										</div>
-
-										<!-- Continue as Guest Button -->
-										<a href="{{ url('/categories') }}"
-												class="border border-white/30 hover:border-white/50 bg-transparent hover:bg-white/5 text-gray-300 hover:text-white px-8 py-2.5 rounded-full font-light text-sm tracking-wide mt-4 transition-all duration-300 ease-in-out hover:-translate-y-0.5">
-												Continue as Guest
-										</a>
 								</div>
 						</div>
 
-						<!-- Features Grid -->
+						{{-- Features Grid --}}
 						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-20 opacity-90">
 								<div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-lg p-4 text-center">
 										<h3 class="font-light text-sm mb-1">Quick</h3>
@@ -77,7 +71,7 @@
 				</div>
 		</div>
 
-		<!-- Mobile Background Fallback -->
+		{{-- Mobile Background Fallback --}}
 		<style>
 				@media (max-width: 768px) {
 						body {

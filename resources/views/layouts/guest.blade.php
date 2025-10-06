@@ -8,12 +8,12 @@
 
 		<title>{{ env('APP_NAME') }}</title>
 
-		<!-- Fonts -->
+		{{-- Fonts --}}
 		<link rel="preconnect" href="https://fonts.bunny.net">
 		<link href="https://fonts.bunny.net/css?family=cormorant-garamond:300,400,500,600|inter:300,400,500&display=swap"
 				rel="stylesheet" />
 
-		<!-- Scripts -->
+		{{-- Scripts --}}
 		@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

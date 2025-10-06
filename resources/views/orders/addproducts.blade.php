@@ -13,7 +13,7 @@
 				<div class="py-2">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
 								@if (isset($order) && $order)
-										<!-- Back Button -->
+										{{-- Back Button --}}
 										<div class="mb-6">
 												<a href="{{ route('orders.show', $order) }}"
 														class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
@@ -31,7 +31,7 @@
 										'placeholder' => 'Search by SKU...',
 								])
 
-								<!-- Selected SKUs -->
+								{{-- Selected SKUs --}}
 								@if (!empty($selectedProducts))
 										<div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 p-6 mb-6">
 												<h3 class="text-lg font-medium text-white mb-4">Current Selection</h3>
@@ -100,7 +100,7 @@
 										</div>
 								@endif
 
-								<!-- Variants Table with plus and minus buttons-->
+								{{-- Variants Table with plus and minus buttons --}}
 								@include('orders.partials.variants', ['showPlusButton' => true])
 						</div>
 				</div>

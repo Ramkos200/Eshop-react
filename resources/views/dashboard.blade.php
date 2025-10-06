@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-				<!-- Orders Card -->
+				{{-- Orders Card --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<div class="flex items-center justify-between">
 								<div>
@@ -25,12 +25,11 @@
 										</div>
 								</div>
 								<div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 
-				<!-- Revenue Card -->
+				{{-- Revenue Card --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<div class="flex items-center justify-between">
 								<div>
@@ -43,12 +42,11 @@
 										</p>
 								</div>
 								<div class="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 
-				<!-- Categories Card -->
+				{{-- Categories Card --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<div class="flex items-center justify-between">
 								<div>
@@ -59,12 +57,11 @@
 										</p>
 								</div>
 								<div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 
-				<!-- Products Card -->
+				{{-- Products Card --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<div class="flex items-center justify-between">
 								<div>
@@ -75,14 +72,13 @@
 										</p>
 								</div>
 								<div class="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
-										<!-- Icon here -->
 								</div>
 						</div>
 				</div>
 		</div>
 
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-				<!-- Recent Orders Summary -->
+				{{-- Recent Orders Summary --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Recent Activity</h3>
 						<div class="space-y-3">
@@ -97,7 +93,7 @@
 						</div>
 				</div>
 
-				<!-- Quick Actions -->
+				{{-- Quick Actions --}}
 				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 						<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Quick Actions</h3>
 						<div class="grid grid-cols-2 gap-3">

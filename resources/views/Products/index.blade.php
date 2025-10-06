@@ -7,7 +7,16 @@
 				<p class="text-2xl text-blue-400 underline mt-2 text-center {{ !$showTrash ? 'hidden' : '' }}">DON'T FORGET to assign
 						a category to the restored products</p>
 		</x-slot>
-
+		@if ($errors->any())
+				<div class="mb-6 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
+						<h4 class="font-bold">Validation Errors:</h4>
+						<ul class="list-disc list-inside mt-2">
+								@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+								@endforeach
+						</ul>
+				</div>
+		@endif
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat min-w-full">
 				<div class="py-2">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
@@ -18,7 +27,7 @@
 												+ New Product
 										</x-link-button>
 
-										<!-- Search Form -->
+										{{-- Search Form --}}
 										<form method="GET" action="{{ route('products.index') }}" class="w-full md:w-auto">
 												@if (request('trash'))
 														<input type="hidden" name="trash" value="1">
@@ -40,7 +49,7 @@
 								</div>
 
 
-								<!-- Products Table -->
+								{{-- Products Table --}}
 								@include('products.partials.products', ['showPlusButton' => false])
 						</div>
 				</div>

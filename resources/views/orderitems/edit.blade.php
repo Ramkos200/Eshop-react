@@ -4,7 +4,16 @@
 						{{ __('Edit Order Item Quantity') }}
 				</h2>
 		</x-slot>
-
+@if ($errors->any())
+    <div class="mb-6 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
+        <h4 class="font-bold">Validation Errors:</h4>
+        <ul class="list-disc list-inside mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-4">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">

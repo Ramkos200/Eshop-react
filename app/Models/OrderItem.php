@@ -13,6 +13,8 @@ class OrderItem extends Model
         'price',
         'quantity',
         'attributes',
+        'product_id',
+        'subtotal'
 
     ];
     protected $casts = ['attributes' => 'array'];

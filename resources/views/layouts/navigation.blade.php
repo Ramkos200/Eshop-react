@@ -1,9 +1,9 @@
 <nav x-data="{ open: false }" class="bg-white/10 backdrop-blur-md border-b border-white/10 shadow-lg">
-		<!-- Primary Navigation Menu -->
+		{{-- Primary Navigation Menu --}}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between h-16">
 						<div class="flex">
-								<!-- Logo -->
+								{{-- Logo --}}
 								<div class="shrink-0 flex items-center">
 										<a href="{{ route('dashboard') }}"
 												class="font-['Cormorant_Garamond'] text-2xl font-light text-white text-shadow-lg shadow-white/10">
@@ -11,7 +11,7 @@
 										</a>
 								</div>
 
-								<!-- Navigation Links -->
+								{{-- Navigation Links --}}
 								<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 										<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-200">
 												{{ __('Dashboard') }}
@@ -34,7 +34,7 @@
 								</div>
 						</div>
 
-						<!-- Settings Dropdown -->
+						{{-- Settings Dropdown --}}
 						<div class="hidden sm:flex sm:items-center sm:ms-6">
 								<x-dropdown align="right" width="48">
 										<x-slot name="trigger">
@@ -56,7 +56,7 @@
 														{{ __('Profile') }}
 												</x-dropdown-link>
 
-												<!-- Authentication -->
+												{{-- Authentication --}}
 												<form method="POST" action="{{ route('logout') }}">
 														@csrf
 														<x-dropdown-link :href="route('logout')" class="text-gray-800 hover:bg-gray-100"
@@ -69,7 +69,7 @@
 								</x-dropdown>
 						</div>
 
-						<!-- Hamburger -->
+						{{-- Hamburger --}}
 						<div class="-me-2 flex items-center sm:hidden">
 								<button @click="open = ! open"
 										class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-200 hover:bg-white/10 focus:outline-none focus:bg-white/10 focus:text-white transition duration-150 ease-in-out">
@@ -84,7 +84,7 @@
 				</div>
 		</div>
 
-		<!-- Responsive Navigation Menu -->
+		{{-- Responsive Navigation Menu --}}
 		<div :class="{ 'block': open, 'hidden': !open }"
 				class="hidden sm:hidden bg-white/10 backdrop-blur-md border-b border-white/10">
 				<div class="pt-2 pb-3 space-y-1">
@@ -101,7 +101,7 @@
 
 				</div>
 
-				<!-- Responsive Settings Options -->
+				{{-- Responsive Settings Options --}}
 				<div class="pt-4 pb-1 border-t border-white/10">
 						<div class="px-4">
 								<div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
@@ -113,7 +113,7 @@
 										{{ __('Profile') }}
 								</x-responsive-nav-link>
 
-								<!-- Authentication -->
+								{{-- Authentication --}}
 								<form method="POST" action="{{ route('logout') }}">
 										@csrf
 										<x-responsive-nav-link :href="route('logout')" class="text-white hover:bg-white/10"

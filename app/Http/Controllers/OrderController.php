@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Img;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -85,13 +87,7 @@ class OrderController extends Controller
         'zip_code' => $validated['zip_code'],
         'country' => $validated['country'],
       ],
-      'billing_address' => [
-        'city' => $validated['city'],
-        'state' => $validated['state'],
-        'street_address' => $validated['street_address'],
-        'zip_code' => $validated['zip_code'],
-        'country' => $validated['country'],
-      ],
+
     ]);
 
     return redirect()->route('orders.show', $order)->with('success', 'Order created successfully!');
@@ -128,7 +124,6 @@ class OrderController extends Controller
       'total_amount' => 'required|numeric|min:0',
       'notes' => 'nullable|string',
       'shipping_address' => 'required|array',
-      'billing_address' => 'required|array',
     ]);
 
     $order->update($validated);
@@ -230,16 +225,39 @@ class OrderController extends Controller
 
   public function addProducts(Request $request, Order $order = null)
   {
-    $query = Product::with(['category', 'skus' => function ($query) use ($request) {
-      if ($request->has('search') && !empty($request->search)) {
-        $query->where('code', 'like', '%' . $request->search . '%');
+    // $query = Product::with(['category', 'skus' => function ($query) use ($request) {
+    //   if ($request->has('search') && !empty($request->search)) {
+    //     $query->where('code', 'like', '%' . $request->search . '%');
+    //   }
+    //   // $query->with('images');
+    // }]);
+
+    // if ($request->has('search') && !empty($request->search)) {
+    //   $searchTerm = '%' . $request->search . '%';
+
+    //   $query->whereHas('skus', function ($skuQuery) use ($searchTerm) {
+    //     $skuQuery->where('code', 'like', $searchTerm);
+    //   });
+    // }
+
+    // $products = $query->paginate(10);
+    // $selectedProducts = Session::get('selectedProducts', []);
+
+    // return view('orders.addproducts', compact('products', 'selectedProducts', 'order'));
+    $searchTerm = $request->has('search') && !empty($request->search)
+      ? '%' . $request->search . '%' : null;
+
+    $query = Product::with([
+      'category',
+      'skus' => function ($query) use ($searchTerm) {
+        $query->with('images');
+        if ($searchTerm) {
+          $query->where('code', 'like', $searchTerm);
+        }
       }
-      // $query->with('images');
-    }]);
+    ]);
 
-    if ($request->has('search') && !empty($request->search)) {
-      $searchTerm = '%' . $request->search . '%';
-
+    if ($searchTerm) {
       $query->whereHas('skus', function ($skuQuery) use ($searchTerm) {
         $skuQuery->where('code', 'like', $searchTerm);
       });
@@ -268,6 +286,11 @@ class OrderController extends Controller
     }
 
     $selectedProducts[$sku->id]['quantity']++;
+
+    $sku->update([
+      'inventory' => $sku->inventory - 1,
+    ]);
+
     Session::put('selectedProducts', $selectedProducts);
 
     return redirect()->route('orders.addProducts', $order);
@@ -289,7 +312,9 @@ class OrderController extends Controller
 
       Session::put('selectedProducts', $selectedProducts);
     }
-
+    $sku->update([
+      'inventory' => $sku->inventory + 1,
+    ]);
     return redirect()->route('orders.addProducts', $order);
   }
 
@@ -340,7 +365,7 @@ class OrderController extends Controller
           'subtotal' => $subtotal,
           'sku_code' => $sku->code,
           'sku_id' => $sku->id,
-          'attributes' => json_encode($sku->attributes ?? ['color' => '', 'size' => '', 'materials' => '']),
+          'attributes' => $sku->attributes ?? ['color' => '', 'size' => '', 'materials' => ''],
         ]);
       }
     }
@@ -353,5 +378,59 @@ class OrderController extends Controller
 
     return redirect()->route('orders.show', $order)
       ->with('success', 'Order finalized successfully!');
+  }
+
+  public function uploadReceipt(Request $request, Order $order)
+  {
+    $validated = $request->validate([
+      'receipts.*' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120' // 5MB max
+    ]);
+
+    if ($request->hasFile('receipts')) {
+      foreach ($request->file('receipts') as $index => $receipt) {
+        $filename = time() . '_' . $index . '_receipt.' . $receipt->getClientOriginalExtension();
+        $path = $receipt->storeAs("images/{$order->code}/receipts", $filename, 'public');
+        Img::create([
+          'filename' => $filename,
+          'original_name' => $receipt->getClientOriginalName(),
+          'path' => $path,
+          'mime_type' => $receipt->getMimeType(),
+          'file_size' => $receipt->getSize(),
+          'disk' => 'public',
+          'type' => 'receipt',
+          'order' => $index,
+          'alt_text' => "Receipt for order {$order->code}",
+          'caption' => "Order receipt uploaded on " . now()->format('M d, Y'),
+          'imageable_id' => $order->id,
+          'imageable_type' => Order::class,
+        ]);
+      }
+
+      return redirect()->back()->with('success', 'Receipt(s) uploaded successfully!');
+    }
+
+    return redirect()->back()->with('error', 'No receipts were uploaded.');
+  }
+
+  public function deleteReceipt(Order $order, Img $img)
+  {
+    // Verify the receipt belongs to this order
+    if ($img->imageable_id !== $order->id || $img->imageable_type !== Order::class) {
+      return redirect()->back()->with('error', 'Receipt not found for this order.');
+    }
+
+    try {
+      // Delete file from storage
+      if (Storage::disk($img->disk)->exists($img->path)) {
+        Storage::disk($img->disk)->delete($img->path);
+      }
+
+      // Delete record from database
+      $img->delete();
+
+      return redirect()->back()->with('success', 'Receipt deleted successfully!');
+    } catch (\Exception $e) {
+      return redirect()->back()->with('error', 'Failed to delete receipt: ' . $e->getMessage());
+    }
   }
 }

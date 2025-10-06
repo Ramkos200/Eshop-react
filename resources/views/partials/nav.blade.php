@@ -1,7 +1,7 @@
 <nav class="bg-black shadow-md z-50">
 		<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between h-16">
-						<!-- Logo -->
+						{{-- Logo --}}
 						<div class="flex items-center">
 								<a href="{{ url('dashboard') }}" class="flex-shrink-0 flex items-center">
 										<i class="fas fa-lightbulb text-amber-500 text-3xl mr-2"></i>
@@ -9,7 +9,7 @@
 								</a>
 						</div>
 
-						<!-- Desktop Navigation -->
+						{{-- Desktop Navigation --}}
 						<div class="hidden md:flex items-center space-x-20">
 								<a href="{{ route('categories.index') }}"
 										class="text-gray-300 hover:text-amber-400 transition duration-150">Categories</a>
@@ -21,7 +21,7 @@
 										class="text-gray-300 hover:text-amber-400 transition duration-150">Deleted items</a>
 						</div>
 						<div class="flex inline-flex mt-4 space-x-2">
-								<!-- Search Bar -->
+								{{-- Search Bar --}}
 								<form method="GET" action="{{ route('products.index') }}" class="w-full md:w-auto">
 										<div class="relative flex items-center ">
 												<input type="text" name="search" placeholder="Search products..."
@@ -35,14 +35,14 @@
 										</div>
 								</form>
 
-								{{-- <!-- Cart Icon -->
-								<a href="#" class="relative text-gray-300 hover:text-amber-400 transition duration-150">
+								{{--  Cart Icon --}}
+								{{-- 	<a href="#" class="relative text-gray-300 hover:text-amber-400 transition duration-150">
 										<i class="fas fa-shopping-cart text-xl"></i>
 										<span
 												class="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span>
 								</a> --}}
 
-								<!-- User Profile -->
+								{{-- User Profile --}}
 								<div class="flex inline-flex dropdown">
 										<button class="flex items-center space-x-2 focus:outline-none">
 												<div class="h-8 w-8 rounded-full bg-white text-black flex items-center justify-center">
@@ -62,13 +62,14 @@
 												<form method="POST" action="{{ route('logout') }}">
 														@csrf
 														<button type="submit"
-																class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Sign out</button>
+																class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Sign
+																out</button>
 												</form>
 										</div>
 								</div>
 						</div>
 
-						<!-- Mobile menu button -->
+						{{-- Mobile menu button --}}
 						<div class="md:hidden flex items-center">
 								<button class="text-gray-300 hover:text-amber-400 focus:outline-none">
 										<i class="fas fa-bars text-xl"></i>

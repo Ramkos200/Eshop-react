@@ -1,194 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="csrf-token"
+            content="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm"
+        />
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm">
+        <title>Laravel</title>
 
-    <title>Laravel</title>
+        {{-- Fonts --}}
+        <link rel="preconnect" href="https://fonts.bunny.net" />
+        <link
+            href="https://fonts.bunny.net/css?family=cormorant-garamond:300,400,500,600|inter:300,400,500&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:300,400,500,600|inter:300,400,500&display=swap"
-        rel="stylesheet" />
+        {{-- Scripts --}}
+        <link
+            rel="preload"
+            as="style"
+            href="http://127.0.0.1:8000/build/assets/app--XnYOxDJ.css"
+        />
+        <link
+            rel="modulepreload"
+            as="script"
+            href="http://127.0.0.1:8000/build/assets/app-PZj53Sw7.js"
+        />
+        <link
+            rel="stylesheet"
+            href="http://127.0.0.1:8000/build/assets/app--XnYOxDJ.css"
+        />
+        <script
+            type="module"
+            src="http://127.0.0.1:8000/build/assets/app-PZj53Sw7.js"
+        ></script>
+        <style>
+            .text-shadow-lg {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+        </style>
+    </head>
 
-    <!-- Scripts -->
-    <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/app--XnYOxDJ.css" /><link rel="modulepreload" as="script" href="http://127.0.0.1:8000/build/assets/app-PZj53Sw7.js" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app--XnYOxDJ.css" /><script type="module" src="http://127.0.0.1:8000/build/assets/app-PZj53Sw7.js"></script>
-    <style>
-        .text-shadow-lg {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-    </style>
-</head>
-
-
-
-<body class="font-['Inter'] antialiased bg-center bg-no-repeat min-h-screen"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.2)), url('http://127.0.0.1:8000/images/welcome-dashboard-picture.jpg'); background-size: cover; background-position: left center;">
-    <div class="min-h-screen bg-black/40 backdrop-blur-sm">
-        <nav x-data="{ open: false }" class="bg-white/10 backdrop-blur-md border-b border-white/10 shadow-lg">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="http://127.0.0.1:8000/dashboard"
-                        class="font-['Cormorant_Garamond']  font-light text-white text-shadow-lg shadow-white/10 fas fa-lightbulb text-amber-500 text-3xl mr-2">
-                        QuickBuy
-                    </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <a class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out text-white hover:text-gray-200" href="http://127.0.0.1:8000/dashboard">
-    Dashboard
-</a>
-
-                    <a class="inline-flex items-center px-4 py-2 border-b-2 border-white text-sm font-[&quot;Inter&quot;] leading-5 text-white focus:outline-none focus:border-white/80 transition duration-150 ease-in-out text-white hover:text-gray-200" href="http://127.0.0.1:8000/categories">
-    Categories
-</a>
-                    <a class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out text-white hover:text-gray-200" href="http://127.0.0.1:8000/products">
-    Products
-</a>
-                    <a class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out" href="http://127.0.0.1:8000/orders">
-    All Orders
-</a>
-
-                    <a class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out" href="http://127.0.0.1:8000/products?trash">
-    Deleted Items
-</a>
-
-                </div>
-            </div>
-
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div class="relative mt-2" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
-        <button
-                            class="inline-flex items-center px-4 py-2 border border-white/20 text-sm leading-4 font-medium rounded-md text-white bg-white/10 hover:bg-white/20 focus:outline-none transition ease-in-out duration-150">
-                            <div>admin</div>
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
+    <body
+        class="font-['Inter'] antialiased bg-center bg-no-repeat min-h-screen"
+        style="
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2)),
+                url('http://127.0.0.1:8000/images/welcome-dashboard-picture.jpg');
+            background-size: cover;
+            background-position: left center;
+        "
+    >
+        <div class="min-h-screen bg-black/40 backdrop-blur-sm">
+            <nav
+                x-data="{ open: false }"
+                class="bg-white/10 backdrop-blur-md border-b border-white/10 shadow-lg"
+            >
+                {{-- Primary Navigation Menu --}}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            {{-- Logo --}}
+                            <div class="shrink-0 flex items-center">
+                                <a
+                                    href="http://127.0.0.1:8000/dashboard"
+                                    class="font-['Cormorant_Garamond'] font-light text-white text-shadow-lg shadow-white/10 fas fa-lightbulb text-amber-500 text-3xl mr-2"
+                                >
+                                    QuickBuy
+                                </a>
                             </div>
-                        </button>
-    </div>
 
-    <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
-        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-        class="absolute mt-4 w-48 rounded-lg shadow-lg ltr:origin-top-right rtl:origin-top-left end-0" style="display: none;"
-        @click="open = false">
-        <div class="rounded-lg ring-1 ring-white/10 py-1 bg-white/10 backdrop-blur-md border border-white/10">
-            <a class="block w-full px-4 py-2 text-start font-[&quot;Inter&quot;] text-sm leading-5 text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 transition duration-150 ease-in-out text-gray-800 hover:bg-gray-100" href="http://127.0.0.1:8000/profile">Profile</a>
-                        <!-- Authentication -->
-                        <form method="POST" action="http://127.0.0.1:8000/logout">
-                            <input type="hidden" name="_token" value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm" autocomplete="off">                            <a class="block w-full px-4 py-2 text-start font-[&quot;Inter&quot;] text-sm leading-5 text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 transition duration-150 ease-in-out text-gray-800 hover:bg-gray-100" href="http://127.0.0.1:8000/logout" onclick="event.preventDefault();
-                                                this.closest('form').submit();">Log Out</a>                        </form>
-        </div>
-    </div>
-</div>
-            </div>
+                            {{-- Navigation Links --}}
+                            <div
+                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                            >
+                                <a
+                                    class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out text-white hover:text-gray-200"
+                                    href="http://127.0.0.1:8000/dashboard"
+                                >
+                                    Dashboard
+                                </a>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-200 hover:bg-white/10 focus:outline-none focus:bg-white/10 focus:text-white transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
+                                <a
+                                    class="inline-flex items-center px-4 py-2 border-b-2 border-white text-sm font-[&quot;Inter&quot;] leading-5 text-white focus:outline-none focus:border-white/80 transition duration-150 ease-in-out text-white hover:text-gray-200"
+                                    href="http://127.0.0.1:8000/categories"
+                                >
+                                    Categories
+                                </a>
+                                <a
+                                    class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out text-white hover:text-gray-200"
+                                    href="http://127.0.0.1:8000/products"
+                                >
+                                    Products
+                                </a>
+                                <a
+                                    class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out"
+                                    href="http://127.0.0.1:8000/orders"
+                                >
+                                    All Orders
+                                </a>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }"
-        class="hidden sm:hidden bg-white/10 backdrop-blur-md border-b border-white/10">
-        <div class="pt-2 pb-3 space-y-1">
-            <a class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10" href="http://127.0.0.1:8000/dashboard">
-    Dashboard
-</a>
-            
-        </div>
+                                <a
+                                    class="inline-flex items-center px-4 py-2 border-b-2 border-transparent text-sm font-[&quot;Inter&quot;] leading-5 text-gray-300 hover:text-white hover:border-white/30 focus:outline-none focus:text-white focus:border-white/30 transition duration-150 ease-in-out"
+                                    href="http://127.0.0.1:8000/products?trash"
+                                >
+                                    Deleted Items
+                                </a>
+                            </div>
+                        </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-white/10">
-            <div class="px-4">
-                <div class="font-medium text-base text-white">admin</div>
-                <div class="font-medium text-sm text-gray-200">admin@eshop.com</div>
-            </div>
+                        {{-- Settings Dropdown --}}
+                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                            <div
+                                class="relative mt-2"
+                                x-data="{ open: false }"
+                                @click.outside="open = false"
+                                @close.stop="open = false"
+                            >
+                                <div @click="open = ! open">
+                                    <button
+                                        class="inline-flex items-center px-4 py-2 border border-white/20 text-sm leading-4 font-medium rounded-md text-white bg-white/10 hover:bg-white/20 focus:outline-none transition ease-in-out duration-150"
+                                    >
+                                        <div>admin</div>
+                                        <div class="ms-1">
+                                            <svg
+                                                class="fill-current h-4 w-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </div>
 
-            <div class="mt-3 space-y-1">
-                <a class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10" href="http://127.0.0.1:8000/profile">
-    Profile
-</a>
+                                <div
+                                    x-show="open"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
+                                    class="absolute mt-4 w-48 rounded-lg shadow-lg ltr:origin-top-right rtl:origin-top-left end-0"
+                                    style="display: none"
+                                    @click="open = false"
+                                >
+                                    <div
+                                        class="rounded-lg ring-1 ring-white/10 py-1 bg-white/10 backdrop-blur-md border border-white/10"
+                                    >
+                                        <a
+                                            class="block w-full px-4 py-2 text-start font-[&quot;Inter&quot;] text-sm leading-5 text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 transition duration-150 ease-in-out text-gray-800 hover:bg-gray-100"
+                                            href="http://127.0.0.1:8000/profile"
+                                            >Profile</a
+                                        >
+                                        {{-- Authentication --}}
+                                        <form
+                                            method="POST"
+                                            action="http://127.0.0.1:8000/logout"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="_token"
+                                                value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm"
+                                                autocomplete="off"
+                                            />
+                                            <a
+                                                class="block w-full px-4 py-2 text-start font-[&quot;Inter&quot;] text-sm leading-5 text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 transition duration-150 ease-in-out text-gray-800 hover:bg-gray-100"
+                                                href="http://127.0.0.1:8000/logout"
+                                                onclick="event.preventDefault();
+                                                this.closest('form').submit();"
+                                                >Log Out</a
+                                            >
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Authentication -->
-                <form method="POST" action="http://127.0.0.1:8000/logout">
-                    <input type="hidden" name="_token" value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm" autocomplete="off">                    <a class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10" href="http://127.0.0.1:8000/logout" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-    Log Out
-</a>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+                        {{-- Hamburger --}}
+                        <div class="-me-2 flex items-center sm:hidden">
+                            <button
+                                @click="open = ! open"
+                                class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-200 hover:bg-white/10 focus:outline-none focus:bg-white/10 focus:text-white transition duration-150 ease-in-out"
+                            >
+                                <svg
+                                    class="h-6 w-6"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        :class="{ 'hidden': open, 'inline-flex': !open }"
+                                        class="inline-flex"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                    <path
+                                        :class="{ 'hidden': !open, 'inline-flex': open }"
+                                        class="hidden"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Page Heading -->
-                    
+                {{-- Responsive Navigation Menu --}}
+                <div
+                    :class="{ 'block': open, 'hidden': !open }"
+                    class="hidden sm:hidden bg-white/10 backdrop-blur-md border-b border-white/10"
+                >
+                    <div class="pt-2 pb-3 space-y-1">
+                        <a
+                            class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10"
+                            href="http://127.0.0.1:8000/dashboard"
+                        >
+                            Dashboard
+                        </a>
+                    </div>
+
+                    {{-- Responsive Settings Options --}}
+                    <div class="pt-4 pb-1 border-t border-white/10">
+                        <div class="px-4">
+                            <div class="font-medium text-base text-white">
+                                admin
+                            </div>
+                            <div class="font-medium text-sm text-gray-200">
+                                admin@eshop.com
+                            </div>
+                        </div>
+
+                        <div class="mt-3 space-y-1">
+                            <a
+                                class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10"
+                                href="http://127.0.0.1:8000/profile"
+                            >
+                                Profile
+                            </a>
+
+                            {{-- Authentication --}}
+                            <form
+                                method="POST"
+                                action="http://127.0.0.1:8000/logout"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="_token"
+                                    value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm"
+                                    autocomplete="off"
+                                />
+                                <a
+                                    class="block w-full ps-4 pe-4 py-3 border-l-4 border-transparent font-[&quot;Inter&quot;] text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:text-white focus:bg-white/10 focus:border-white/30 transition duration-150 ease-in-out text-white hover:bg-white/10"
+                                    href="http://127.0.0.1:8000/logout"
+                                    onclick="event.preventDefault();
+                                        this.closest('form').submit();"
+                                >
+                                    Log Out
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            {{-- Page Heading --}}
+
             <header>
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h2 class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10">
-						child Child Category
-				</h2>
+                    <h2
+                        class="font-['Cormorant_Garamond'] text-3xl font-light text-white text-shadow-lg shadow-white/10"
+                    >
+                        child Child Category
+                    </h2>
                 </div>
             </header>
-        
-        <!-- Page Content -->
-        <main class="text-white">
-            <div class="min-h-screen bg-cover bg-center bg-no-repeat">
-				<div class="py-4">
-						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
-										<div class="p-8 text-white">
-																																										<p class="text-lg text-gray-400 italic ml-4 mb-5">Can't create more
-																		subcategories</p>
-																												<div class="flex justify-left">
-																																		<a
-    class="inline-flex items-center ml-2 px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-[&quot;Inter&quot;] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150" href="http://127.0.0.1:8000/products/create">
-    + New Product
-</a>
-																																<form action="http://127.0.0.1:8000/categories/36" method="POST"
-																		class="">
-																		<input type="hidden" name="_token" value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm" autocomplete="off">																		<input type="hidden" name="_method" value="DELETE">																		<button type="submit"
-																				class="inline-flex items-center ml-2 px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-[&quot;Inter&quot;] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150"
-																				title="Delete Category" onclick="return confirm('delete subcategory?')">
-																				Delete Category
-																		</button>
-																</form>
-														</div>
-														<p class="text-lg text-gray-400 italic ml-4">No subcategories</p>
-																						</div>
-								</div>
-						</div>
-				</div>
-		</div>
-        </main>
-        
-    </div>
-</body>
 
+            {{-- Page Content --}}
+            <main class="text-white">
+                <div class="min-h-screen bg-cover bg-center bg-no-repeat">
+                    <div class="py-4">
+                        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+                            <div
+                                class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg"
+                            >
+                                <div class="p-8 text-white">
+                                    <p
+                                        class="text-lg text-gray-400 italic ml-4 mb-5"
+                                    >
+                                        Can't create more subcategories
+                                    </p>
+                                    <div class="flex justify-left">
+                                        <a
+                                            class="inline-flex items-center ml-2 px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-[&quot;Inter&quot;] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150"
+                                            href="http://127.0.0.1:8000/products/create"
+                                        >
+                                            + New Product
+                                        </a>
+                                        <form
+                                            action="http://127.0.0.1:8000/categories/36"
+                                            method="POST"
+                                            class=""
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="_token"
+                                                value="LEVy7MvxuGNbD4PKYkILADn3M8jPeJRycYLRqAOm"
+                                                autocomplete="off"
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name="_method"
+                                                value="DELETE"
+                                            />
+                                            <button
+                                                type="submit"
+                                                class="inline-flex items-center ml-2 px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-[&quot;Inter&quot;] text-sm text-white uppercase tracking-widest hover:bg-white/30 hover:border-white/50 focus:bg-white/30 active:bg-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 transition ease-in-out duration-150"
+                                                title="Delete Category"
+                                                onclick="return confirm('delete subcategory?')"
+                                            >
+                                                Delete Category
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <p
+                                        class="text-lg text-gray-400 italic ml-4"
+                                    >
+                                        No subcategories
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
 </html>

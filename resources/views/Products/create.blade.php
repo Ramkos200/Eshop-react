@@ -5,7 +5,16 @@
 
 				</h2>
 		</x-slot>
-
+		@if ($errors->any())
+				<div class="mb-6 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
+						<h4 class="font-bold">Validation Errors:</h4>
+						<ul class="list-disc list-inside mt-2">
+								@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+								@endforeach
+						</ul>
+				</div>
+		@endif
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-4">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
@@ -49,11 +58,7 @@
 																<textarea name="description" id="description" rows="3"
 																  class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 whitespace-pre-wrap"></textarea>
 														</div>
-														<div class="mb-4">
-																<label for="image" class="block text-sm font-medium mb-2">Main image </label>
-																<input type="file" name="image" id="image"
-																		class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400">
-														</div>
+
 
 														<div class="mb-4">
 																<label for="category_id" class="block text-sm font-medium mb-2">Category *</label>
@@ -68,17 +73,26 @@
 																		@endforeach
 																</select>
 														</div>
-
-														<div class="flex space-x-3 mb-5">
+														<div class="flex space-x-3 mb-5 mt-5">
 																<button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition">
 																		Create Product
 																</button>
-																<a href="{{ route('products.index') }}"
-																		class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
-																		Cancel
-																</a>
+																@if ($category)
+																		<a href="{{ route('products.index', 'category_id=' . $category->id) }}"
+																				class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
+																				Cancel
+																		</a>
+																@else
+																		<a href="{{ route('products.index') }}"
+																				class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
+																				Cancel
+																		</a>
+																@endif
 														</div>
 												</form>
+												{{-- <!-- Image Upload Field -->
+												<x-image-upload-simplified :model="Product::class" :modelId="0" type="main" label="Product Image"
+														:required="true" description="Upload the main image for this Product" /> --}}
 										</div>
 								</div>
 						</div>

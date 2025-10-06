@@ -1,7 +1,7 @@
 <div class="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg border border-gray-700/50 overflow-hidden">
 		<div class="overflow-x-auto min-w-full">
-				{{-- @if (session('error'))
-						<div class="mb-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300">
+				@if (session('error'))
+						<div class="mb-4 p-4 bg-red-500/40 border border-red-500/50 rounded-lg text-red-300">
 								<div class="flex items-center">
 										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
 												<path fill-rule="evenodd"
@@ -11,10 +11,10 @@
 										{{ session('error') }}
 								</div>
 						</div>
-				@endif --}}
+				@endif
 
 				@if (session('success'))
-						<div class="mb-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300">
+						<div class="mb-4 p-4 bg-green-500/40 border border-green-500/50 rounded-lg text-green-300">
 								<div class="flex items-center">
 										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
 												<path fill-rule="evenodd"
@@ -25,6 +25,8 @@
 								</div>
 						</div>
 				@endif
+
+
 				<table class="min-w-full divide-y divide-gray-700">
 						<thead class="bg-gray-700/50">
 								<tr>
@@ -89,6 +91,24 @@
 												</a>
 										</th>
 										<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+												<a href="{{ request()->fullUrlWithQuery(['sort' => 'inventory', 'direction' => request('sort') === 'inventory' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+														class="flex items-center group hover:text-white">
+														Inventory
+														<span class="ml-1 flex flex-col">
+																<svg
+																		class="w-3 h-3 fill-current {{ request('sort') === 'inventory' && request('direction') === 'asc' ? 'text-amber-500' : 'text-gray-500' }} group-hover:text-gray-300"
+																		viewBox="0 0 10 16" fill="currentColor">
+																		<path d="M5 14L0 9h10L5 14z" />
+																</svg>
+																<svg
+																		class="w-3 h-3 fill-current {{ request('sort') === 'inventory' && request('direction') === 'desc' ? 'text-amber-500' : 'text-gray-500' }} group-hover:text-gray-300"
+																		viewBox="0 0 10 16" fill="currentColor">
+																		<path d="M5 2L10 7H0L5 2z" />
+																</svg>
+														</span>
+												</a>
+										</th>
+										<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
 												<a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => request('sort') === 'status' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
 														class="flex items-center group hover:text-white">
 														Status
@@ -136,14 +156,15 @@
 														<td class="px-6 py-4 whitespace-nowrap">
 																<div class="flex space-x-2">
 																		@if ($variant->images && $variant->images->count() > 0)
-																				@foreach ($variant->images->take(3) as $image)
+																				@foreach ($variant->images->take(2) as $image)
 																						<div class="h-12 w-12 rounded overflow-hidden border border-gray-600">
 																								<img src="{{ asset('storage/' . $image->path) }}" alt="{{ $variant->name }}"
 																										class="h-full w-full object-cover">
 																						</div>
 																				@endforeach
 																				@if ($variant->images->count() > 3)
-																						<div class="h-12 w-12 rounded bg-gray-700 flex items-center justify-center text-xs text-gray-400">
+																						<div
+																								class="h-12 w-12 rounded bg-gray-700 flex items-center justify-center text-xs text-gray-400">
 																								+{{ $variant->images->count() - 3 }}
 																						</div>
 																				@endif
@@ -160,7 +181,8 @@
 																</div>
 														</td>
 														<td class="px-6 py-4 whitespace-nowrap">
-																<a href="{{ route('products.show', $product->slug) }}" class="text-white font-medium hover:underline">
+																<a href="{{ route('products.show', $product->slug) }}"
+																		class="text-white font-medium hover:underline">
 																		{{ $product->name }}
 																</a>
 														</td>
@@ -172,6 +194,19 @@
 														<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
 																${{ number_format($variant->price ?? $product->price, 2) }}
 														</td>
+														@if ($variant->inventory == 0)
+																<td class="px-6 py-4 whitespace-nowrap text-sm text-red-400 font-semibold">
+																		Out of Stock 🚨
+																</td>
+														@elseif ($variant->inventory <= 5)
+																<td class="px-6 py-4 whitespace-nowrap text-sm text-amber-500">
+																		{{ number_format($variant->inventory) }} - Low Stock ⚠️
+																</td>
+														@else
+																<td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">
+																		{{ number_format($variant->inventory) }} - In Stock ✅
+																</td>
+														@endif
 														<td class="px-6 py-4 whitespace-nowrap">
 																<span
 																		class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -193,7 +228,11 @@
 																				@endif
 
 																				{{-- Plus Button --}}
-																				@include('orders.partials.plusbutton', ['sku' => $variant, 'order' => $order])
+																				@include('orders.partials.plusbutton', [
+																						'sku' => $variant,
+																						'order' => $order,
+																						'status' => $variant->inventory <= 0 ? 'disabled' : 'enabled',
+																				])
 																		@else
 																				{{-- edit button --}}
 																				@include('products.partials.edit', [
@@ -219,7 +258,7 @@
 				</table>
 		</div>
 
-		<!-- Pagination -->
+		{{-- Pagination --}}
 		@if ($products->hasPages())
 				<div class="px-6 py-4 bg-gray-700/50 border-t border-gray-700">
 						<div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">

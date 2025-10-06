@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Order extends Model
 {
@@ -13,14 +14,13 @@ class Order extends Model
         'status',
         'total_amount',
         'notes',
-        'billing_address',
         'shipping_address',
-        'Customer'
+        'Customer',
+        'payment'
     ];
 
     // Add proper casting for JSON fields
     protected $casts = [
-        'billing_address' => 'array',
         'shipping_address' => 'array',
         'Customer' => 'array',
         'total_amount' => 'decimal:2'
@@ -49,15 +49,15 @@ class Order extends Model
         return 'order_code';
     }
 
-    // Add boot method to generate order code automatically
-    protected static function boot()
+    public function images(): MorphMany
     {
-        parent::boot();
+        return $this->morphMany(Img::class, 'imageable');
+    }
 
-        static::creating(function ($order) {
-            if (empty($order->order_code)) {
-                $order->order_code = 'ORD-' . date('Ymd-His') . rand(100, 999);
-            }
-        });
+    public function receipts()
+    {
+        return $this->morphMany(Img::class, 'imageable')
+            ->where('type', 'receipt')
+            ->orderBy('order');
     }
 }

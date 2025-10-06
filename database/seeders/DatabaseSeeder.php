@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@eshop.com',
             'password' => bcrypt('password'),
-            'phone' => '+9631234567892'
+            'phone' => '+9631234567892',
+            'role'=>'admin'
         ]);
         User::create([
             'name' => 'user1',

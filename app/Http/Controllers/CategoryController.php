@@ -48,7 +48,7 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:categories,id'
         ]);
         $slug = Str::slug($validated['name']);
-        if (Product::where('slug', $slug)->exists()) {
+        if (Category::where('slug', $slug)->exists()) {
             $newslug = $slug . '-' . rand(1, 99);
             $slug = $newslug;
         }
@@ -108,8 +108,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if ($category->products()->count() > 0 || $category->products()->withTrashed()->count() > 0) {
+            return redirect()->route('categories.show', $category->slug)
+                ->with('error', 'Cannot delete category because it still has associated products. Please delete all products first.');
+        }
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully!');
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Category deleted successfully!');
     }
 }
