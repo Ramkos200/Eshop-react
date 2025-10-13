@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->string('payment')->nullable();
             $table->json('shipping_address');
+            $table->json('Customer');
             $table->timestamps();
         });
     }

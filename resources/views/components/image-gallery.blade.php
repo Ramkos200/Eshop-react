@@ -99,7 +99,7 @@
 
 														{{-- Delete Form --}}
 														<form action="{{ route('img.destroy', $image) }}" method="POST"
-																onsubmit="return confirm('Are you sure you want to delete this image?');">
+																onsubmit="return confirm('Are you sure you want to delete this image??');">
 																@csrf
 																@method('DELETE')
 																<button type="submit"

@@ -81,7 +81,7 @@ class ProductController extends Controller
         $slug = Str::slug($validated['name']);
         if (Product::where('slug', $slug)->exists()) {
             $newslug = $slug . '-' . rand(1, 99);
-            $slug = 'SKU-' . $newslug;
+            $slug =  $newslug;
         }
         $product = Product::create([
             'name' => $validated['name'],
@@ -100,10 +100,16 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
-        //
-        $product = Product::where('slug', $slug)->firstOrFail();
-        $attributes = $product->skus;
-        return view('products.show', compact('product', 'attributes'));
+        $product = Product::with([
+            'skus' => function ($query) {
+                $query->with(['images', 'mainImage']);
+            },
+            'category',
+            'images',
+            'mainImage'
+        ])->where('slug', $slug)->firstOrFail();
+
+        return view('products.show', compact('product'));
     }
 
 

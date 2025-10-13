@@ -3,56 +3,48 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sku;
+use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Img;
+use App\Models\Sku;
 
 class CartController extends Controller
 {
-    public function index(): JsonResponse
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    public function index(Request $request): JsonResponse
     {
         try {
-            $cart = Session::get('cart', []);
-            $cartItems = [];
-            $total = 0;
-            $count = 0;
+            $user = $request->user();
+            $guestToken = $request->header('X-Cart-Token');
 
-            foreach ($cart as $skuId => $quantity) {
-                $sku = Sku::with('product')->find($skuId);
+            $cartService = app(CartService::class);
+            $cart = $cartService->getCart($user, $guestToken);
 
-                if ($sku) {
-                    $subtotal = $sku->price * $quantity;
-                    $total += $subtotal;
-                    $count += $quantity;
-
-                    $cartItems[] = [
-                        'sku_id' => $sku->id,
-                        'sku_code' => $sku->code,
-                        'product_name' => $sku->product->name,
-                        'product_slug' => $sku->product->slug,
-                        'price' => $sku->price,
-                        'quantity' => $quantity,
-                        'subtotal' => $subtotal,
-                        'inventory' => $sku->inventory,
-                        'attributes' => $sku->attributes
-                    ];
-                }
+            if (!$cart) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to create or retrieve cart'
+                ], 500);
             }
+
+            $cartData = $cartService->getCartTotal($cart);
 
             return response()->json([
                 'success' => true,
-                'data' => [
-                    'items' => $cartItems,
-                    'total' => $total,
-                    'count' => $count
-                ]
+                'data' => $cartData
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch cart',
-                'error' => $e->getMessage()
+                'message' => 'Failed to fetch cart'
             ], 500);
         }
     }
@@ -65,37 +57,101 @@ class CartController extends Controller
                 'quantity' => 'required|integer|min:1|max:10'
             ]);
 
-            $cart = Session::get('cart', []);
-            $skuId = $request->sku_id;
-            $quantity = $request->quantity;
-
-            // Check inventory
-            $sku = Sku::find($skuId);
-            $currentQuantity = $cart[$skuId] ?? 0;
-
-            if ($sku->inventory < ($currentQuantity + $quantity)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Not enough inventory. Only ' . $sku->inventory . ' items available.'
-                ], 422);
-            }
-
-            $cart[$skuId] = $currentQuantity + $quantity;
-            Session::put('cart', $cart);
-
+            $user = $request->user();
+            $guestToken = $request->header('X-Cart-Token');
+            $cart = $this->cartService->getCart($user, $guestToken);
+            $cartData = $this->cartService->addItem($cart, $request->sku_id, $request->quantity);
             return response()->json([
                 'success' => true,
                 'message' => 'Item added to cart successfully',
-                'cart_count' => array_sum($cart)
+                'data' => $cartData
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to add item to cart',
                 'error' => $e->getMessage()
+            ], 422);
+        }
+    }
+
+    public function updateQuantity(Request $request, $skuId): JsonResponse
+    {
+        try {
+            $request->validate([
+                'quantity' => 'required|integer|min:0|max:10'
+            ]);
+
+            $user = $request->user();
+            $guestToken = $request->header('X-Cart-Token');
+
+            $cart = $this->cartService->getCart($user, $guestToken);
+            $cartData = $this->cartService->updateQuantity($cart, $skuId, $request->quantity);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart updated successfully',
+                'data' => $cartData
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update cart',
+                'error' => $e->getMessage()
+            ], 422);
+        }
+    }
+
+    public function removeItem(Request $request, $skuId): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            $guestToken = $request->header('X-Cart-Token');
+
+            $cart = $this->cartService->getCart($user, $guestToken);
+            $cartData = $this->cartService->removeItem($cart, $skuId);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from cart',
+                'data' => $cartData
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to remove item',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    // ... (updateQuantity, removeItem, clear methods similar structure)
+    public function clear(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            $guestToken = $request->header('X-Cart-Token');
+
+            $cartService = app(CartService::class);
+            $cart = $cartService->getCart($user, $guestToken);
+
+            if (!$cart) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cart not found'
+                ], 404);
+            }
+
+            $cartData = $cartService->clearCart($cart);
+
+            return response()->json([
+                'success' => true,
+                'data' => $cartData
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to clear cart: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

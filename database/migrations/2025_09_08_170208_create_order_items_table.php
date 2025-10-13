@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('sku_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();;
             $table->string('sku_code');
             $table->float('price');
             $table->float('subtotal');

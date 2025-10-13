@@ -11,10 +11,11 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+
     public function index(): JsonResponse
     {
         try {
-            $categories = Category::with(['children.children'])
+            $categories = Category::with(['children.children', 'children.children.mainImage', 'mainImage', 'children.mainImage'])
                 ->whereNull('parent_id')
                 ->orderBy('name')
                 ->get();
@@ -36,7 +37,13 @@ class CategoryController extends Controller
     public function show(Category $category): JsonResponse
     {
         try {
-            $category->load(['products.skus', 'children.products.skus']);
+            $category->load([
+                'products.skus',
+                'children.products.skus',
+                'mainImage',
+                'children.mainImage',
+                'children.children.mainImage'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -74,5 +81,38 @@ class CategoryController extends Controller
             'success' => true,
             'data' => $category
         ]);
+    }
+
+    public function products($slug)
+    {
+        try {
+            $category = Category::where('slug', $slug)
+                ->with(['children', 'parent'])
+                ->firstOrFail();
+
+            $products = $category->products()
+                ->with(['mainImage', 'category'])
+                ->where('status', 'Published')
+                ->paginate(12);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'category' => $category,
+                    'products' => $products->items(),
+                    'pagination' => [
+                        'current_page' => $products->currentPage(),
+                        'last_page' => $products->lastPage(),
+                        'per_page' => $products->perPage(),
+                        'total' => $products->total(),
+                    ]
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found'
+            ], 404);
+        }
     }
 }

@@ -4,7 +4,7 @@
 						{{ __($category->name) }}
 				</h2>
 		</x-slot>
-
+		<a href="{{ route('products.index', ['category_id' => $category->id]) }}">Back </a>
 		{{-- session Messages --}}
 		@if (session('success'))
 				<div class="bg-green-500/40 border border-green-600 rounded-lg p-3">

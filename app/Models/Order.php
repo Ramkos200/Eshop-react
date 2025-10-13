@@ -14,19 +14,18 @@ class Order extends Model
         'status',
         'total_amount',
         'notes',
-        'shipping_address',
+        'payment',
         'Customer',
-        'payment'
+        'shipping_address'
     ];
 
-    // Add proper casting for JSON fields
     protected $casts = [
         'shipping_address' => 'array',
         'Customer' => 'array',
         'total_amount' => 'decimal:2'
     ];
 
-    // Fix the total amount accessor - don't override the stored value
+
     public function getCalculatedTotalAttribute()
     {
         return $this->items->sum(function ($item) {
@@ -59,5 +58,10 @@ class Order extends Model
         return $this->morphMany(Img::class, 'imageable')
             ->where('type', 'receipt')
             ->orderBy('order');
+    }
+    public function updateTotalAmount()
+    {
+        $this->total_amount = $this->calculated_total;
+        $this->save();
     }
 }

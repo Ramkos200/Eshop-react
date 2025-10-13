@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use App\Models\Images;
+use App\Models\Img;
 
 class Category extends Model
 {

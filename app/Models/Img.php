@@ -44,7 +44,7 @@ class Img extends Model
      */
     public function getUrlAttribute(): string
     {
-        return Storage::disk($this->disk)->url($this->path);
+        return asset('storage/' . $this->path);
     }
 
     /**

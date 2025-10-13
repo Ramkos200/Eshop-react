@@ -27,7 +27,7 @@
 								@endif
 								{{-- searchForm --}}
 								@include('partials.searchForm', [
-										'route' => route('orders.addProducts', $order),
+										'route' => isset($order) && $order ? route('orders.addProducts', $order) : route('variants.browse'),
 										'placeholder' => 'Search by SKU...',
 								])
 

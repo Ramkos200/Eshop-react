@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    protected $fillable = [
-        'cart_id',
-        'sku_id',
-        'quantity'
+    protected $fillable = ['cart_id', 'sku_id', 'quantity', 'price'];
 
+    protected $casts = [
+        'price' => 'decimal:2',
     ];
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);
     }
+
     public function sku()
     {
         return $this->belongsTo(Sku::class);

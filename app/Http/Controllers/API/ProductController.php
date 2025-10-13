@@ -12,10 +12,17 @@ class ProductController extends Controller
   public function index(Request $request): JsonResponse
   {
 
-    $query = Product::with(['category', 'skus']);
+    $query = Product::with(['category', 'skus', 'mainImage'])
+      ->where('status', 'Published');
 
+    // Filter by category SLUG (this is what's missing)
+    if ($request->has('category')) {
+      $query->whereHas('category', function ($q) use ($request) {
+        $q->where('slug', $request->category);
+      });
+    }
 
-    // Filters
+    // Keep your existing category_id filter for backward compatibility
     if ($request->has('category_id')) {
       $query->where('category_id', $request->category_id);
     }
@@ -25,8 +32,15 @@ class ProductController extends Controller
       $query->where('name', 'like', $searchTerm);
     }
 
+    // Sorting
+    if ($request->has('sort') && $request->has('direction')) {
+      $query->orderBy($request->sort, $request->direction);
+    } else {
+      $query->orderBy('created_at', 'desc');
+    }
+
     $perPage = $request->get('per_page', 12);
-    $products = $query->orderBy('created_at', 'desc')->paginate($perPage);
+    $products = $query->paginate($perPage);
 
     return response()->json([
       'success' => true,
@@ -43,7 +57,7 @@ class ProductController extends Controller
   public function show(Product $product): JsonResponse
   {
     try {
-      $product->load(['category', 'skus']);
+      $product->load(['category', 'skus', 'images', 'skus.mainImage', 'skus.galleryImages']);
 
       return response()->json([
         'success' => true,
@@ -82,7 +96,7 @@ class ProductController extends Controller
   }
   public function browse(Request $request): JsonResponse
   {
-    $query = Product::with(['category', 'skus']);
+    $query = Product::with(['category', 'skus', 'skus.mainImage', 'skus.galleryImages']);
 
 
     $query->whereHas('skus');

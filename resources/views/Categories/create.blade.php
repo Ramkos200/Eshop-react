@@ -8,6 +8,8 @@
 		<div class="min-h-screen bg-cover bg-center bg-no-repeat">
 				<div class="py-4">
 						<div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+								<h1 class="text-yellow-500 text-md italic mb-2"> Add the image after creating the category (click edit category)
+								</h1>
 								<div class="bg-white/10 backdrop-blur-md border border-white/10 overflow-hidden shadow-sm sm:rounded-lg">
 										<div class="p-8 text-white">
 												<form action="{{ route('categories.store') }}" method="POST">

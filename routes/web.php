@@ -43,17 +43,31 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::controller(OrderController::class)
+        ->prefix('orders/{order}')
+        ->group(function () {
+            Route::patch('address', 'updateAddress')->name('orders.updateAddress');
+            Route::patch('status', 'updateStatus')->name('orders.updateStatus');
+            Route::patch('updateuser', 'updateUser')->name('orders.updateUser');
+            Route::get('addProducts', 'addProducts')->name('orders.addProducts');
+            Route::post('addProduct/{sku}', 'addProduct')->name('orders.addProduct');
+            Route::post('decreaseQuantity/{sku}', 'decreaseQuantity')->name('orders.decreaseQuantity');
+            Route::post('removeProduct/{sku}', 'removeProduct')->name('orders.removeProduct');
+            Route::post('clearSelection', 'clearSelection')->name('orders.clearSelection');
+            Route::post('finalize', 'finalizeOrder')->name('orders.finalize');
+            Route::post('upload-receipt', 'uploadReceipt')->name('orders.uploadReceipt');
+            Route::delete('delete-receipt/{img}', 'deleteReceipt')->name('orders.deleteReceipt');
+        });
+    Route::controller(ImgController::class)
+        ->prefix('img')
+        ->group(function () {
+            Route::post('/', 'store')->name('img.store');
+            Route::put('/{img}', 'update')->name('img.update');
+            Route::delete('/{img}', 'destroy')->name('img.destroy');
+            Route::post('/{img}/set-main', 'setAsMain')->name('img.set-main');
+        });
     //aditional routes
     Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
-    Route::patch('/orders/{order}/address', [OrderController::class, 'updateAddress'])->name('orders.updateAddress');
-    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-    Route::patch('/orders/{order}/updateuser', [OrderController::class, 'updateUser'])->name('orders.updateUser');
-    Route::get('/orders/{order?}/addProducts', [OrderController::class, 'addProducts'])->name('orders.addProducts');
-    Route::post('/orders/{order}/addProduct/{sku}', [OrderController::class, 'addProduct'])->name('orders.addProduct');
-    Route::post('/orders/{order}/decreaseQuantity/{sku}', [OrderController::class, 'decreaseQuantity'])->name('orders.decreaseQuantity');
-    Route::post('/orders/{order}/removeProduct/{sku}', [OrderController::class, 'removeProduct'])->name('orders.removeProduct');
-    Route::post('/orders/{order}/clearSelection', [OrderController::class, 'clearSelection'])->name('orders.clearSelection');
-    Route::post('/orders/{order}/finalize', [OrderController::class, 'finalizeOrder'])->name('orders.finalize');
     Route::get('/skus/create/{product:slug}', [SkuController::class, 'create'])->name('sku.create');
     Route::post('/skus/store/{product:slug}', [SkuController::class, 'store'])->name('skus.store');
     Route::get('/variants/browse', [OrderController::class, 'addProducts'])->name('variants.browse');
@@ -65,10 +79,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('/skus', SkuController::class)->except('create', 'store');
     Route::resource('/orders', OrderController::class);
     Route::resource('/orderItem', OrderItemController::class);
-    Route::post('/img', [ImgController::class, 'store'])->name('img.store');
-    Route::put('/img/{img}', [ImgController::class, 'update'])->name('img.update');
-    Route::delete('/img/{img}', [ImgController::class, 'destroy'])->name('img.destroy');
-    Route::post('/img/{img}/set-main', [ImgController::class, 'setAsMain'])->name('img.set-main');
-    Route::post('/orders/{order}/upload-receipt', [OrderController::class, 'uploadReceipt'])->name('orders.uploadReceipt');
-    Route::delete('/orders/{order}/delete-receipt/{img}', [OrderController::class, 'deleteReceipt'])->name('orders.deleteReceipt');
 });

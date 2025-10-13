@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 
+
 // Public routes
 Route::get('/test', function () {
     return response()->json([
@@ -15,49 +16,29 @@ Route::get('/test', function () {
         'timestamp' => now()
     ]);
 });
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/profile', [AuthController::class, 'updateProfile']);
-});
-
-
-
 
 // Categories
 Route::prefix('categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index']); //done
-    Route::get('/{category:slug}', [CategoryController::class, 'show']); //done
-    Route::post('/', [CategoryController::class, 'store']); //////////////////////////////////this is not needed for costumer
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/{category:slug}', [CategoryController::class, 'show']);
+    Route::post('/', [CategoryController::class, 'store']);
+    Route::get('/{category:slug}/products', [CategoryController::class, 'products']);
 });
 
 // Products
 Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index']); //done
-    Route::get('/{product:slug}', [ProductController::class, 'show']); //done
-    Route::get('/search/{query}', [ProductController::class, 'search']); //not tested yet
-    Route::get('/skus/browse', [ProductController::class, 'browse']); //done all products with skus only, products without sku won't be displayed
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{product:slug}', [ProductController::class, 'show']);
+    Route::get('/search/{query}', [ProductController::class, 'search']);
+    Route::get('/skus/browse', [ProductController::class, 'browse']);
 });
 
-// Orders
-Route::prefix('orders')->group(function () {
-    Route::get('/', [OrderController::class, 'index']); //done
-    Route::get('/{order:order_code}', [OrderController::class, 'show']); //done
-});
+// ==================== CART ROUTES ====================
 
-
-//skus
-// Route::prefix('skus')->group(function () {
-//     Route::get('/', [ProductController::class, 'index']);
-//     Route::get('/{product:slug}', [ProductController::class, 'show']);
-//     Route::get('/search/{query}', [ProductController::class, 'search']); //not tested yet
-// });
-
-// Cart
+// Public cart routes (for guests)
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index']);
     Route::post('/add', [CartController::class, 'addItem']);
@@ -66,8 +47,23 @@ Route::prefix('cart')->group(function () {
     Route::post('/clear', [CartController::class, 'clear']);
 });
 
+// ==================== AUTHENTICATED ROUTES ====================
 
-// // Admin-only API routes (if needed)
-// Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-//     //
-// });
+Route::middleware('auth:sanctum')->group(function () {
+    // User profile
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/profile', [AuthController::class, 'updateProfile']);
+    Route::put('/profile/password', [AuthController::class, 'changePassword']);
+
+    // Orders (authenticated only)
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/user-orders', [OrderController::class, 'userOrders']);
+        Route::get('/{order:order_code}', [OrderController::class, 'show']);
+        Route::post('/', [OrderController::class, 'store']);
+    });
+});
+Route::post('/orders', [OrderController::class, 'store']);

@@ -65,7 +65,7 @@
 														</div>
 														<div class="flex space-x-3 mb-5">
 																<button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition">
-																		Create Variant
+																		Save Variant
 																</button>
 																<a href="{{ route('products.show', $sku->product->slug) }}"
 																		class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
@@ -77,10 +77,7 @@
 								</div>
 						</div>
 				</div>
-				<!-- Upload Field -->
-				{{-- <x-image-upload-simplified :model="Sku::class" :modelId="$sku->id" type="main" label="Upload New Image"
-						description="Add a new image to this Variant" /> --}}
-
+				
 				<!-- Existing Images Gallery -->
 				<x-image-gallery :images="$sku->images" title="Variant Images" :showSummary="true" :showEmptyState="true"
 						emptyMessage="No images for this product yet." />

@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\OrganizedImages;
 
 class OrderController extends Controller
 {
+  use OrganizedImages;
   /**
    * Display a listing of the resource.
    */
@@ -225,25 +227,6 @@ class OrderController extends Controller
 
   public function addProducts(Request $request, Order $order = null)
   {
-    // $query = Product::with(['category', 'skus' => function ($query) use ($request) {
-    //   if ($request->has('search') && !empty($request->search)) {
-    //     $query->where('code', 'like', '%' . $request->search . '%');
-    //   }
-    //   // $query->with('images');
-    // }]);
-
-    // if ($request->has('search') && !empty($request->search)) {
-    //   $searchTerm = '%' . $request->search . '%';
-
-    //   $query->whereHas('skus', function ($skuQuery) use ($searchTerm) {
-    //     $skuQuery->where('code', 'like', $searchTerm);
-    //   });
-    // }
-
-    // $products = $query->paginate(10);
-    // $selectedProducts = Session::get('selectedProducts', []);
-
-    // return view('orders.addproducts', compact('products', 'selectedProducts', 'order'));
     $searchTerm = $request->has('search') && !empty($request->search)
       ? '%' . $request->search . '%' : null;
 
@@ -389,7 +372,9 @@ class OrderController extends Controller
     if ($request->hasFile('receipts')) {
       foreach ($request->file('receipts') as $index => $receipt) {
         $filename = time() . '_' . $index . '_receipt.' . $receipt->getClientOriginalExtension();
-        $path = $receipt->storeAs("images/{$order->code}/receipts", $filename, 'public');
+        // $path = $receipt->storeAs("images/{$order->order_code}/receipts", $filename, 'public');
+        $basePath = $this->getOrganizedStoragePath('Order', $order->id);
+        $path = $receipt->storeAs($basePath, $filename, 'public');
         Img::create([
           'filename' => $filename,
           'original_name' => $receipt->getClientOriginalName(),

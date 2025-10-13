@@ -41,7 +41,7 @@ class Product extends Model
     public function galleryImages()
     {
         return $this->morphMany(Img::class, 'imageable')
-            ->where('type', 'Gallery')
+            ->where('type', 'gallery')
             ->where('imageable_type', 'App\Models\Product')
             ->orderBy('sort_order');
     }
