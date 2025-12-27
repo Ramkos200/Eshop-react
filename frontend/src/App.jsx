@@ -16,7 +16,8 @@ import CategoryProducts from "./pages/CategoryProducts";
 import Category from "./pages/Category";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
-import OrderDetails from "./pages/OrderDetails"; // ✅ Import OrderDetails component
+import OrderDetails from "./pages/OrderDetails";
+import Footer from "./components/layout/Footer";
 
 function App() {
     return (
@@ -34,7 +35,7 @@ function App() {
                                 />
                                 <Route
                                     path="/categories"
-                                    element={<Categories />}
+                                    element={<Categories />} //done
                                 />
                                 <Route
                                     path="/products/:slug"
@@ -42,7 +43,7 @@ function App() {
                                 />
                                 <Route
                                     path="/categories/:slug"
-                                    element={<Category />}
+                                    element={<Category />} //done
                                 />
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/login" element={<Login />} />
@@ -66,6 +67,7 @@ function App() {
                                 />
                             </Routes>
                         </main>
+                        <Footer />
                     </div>
                 </CartProvider>
             </AuthProvider>

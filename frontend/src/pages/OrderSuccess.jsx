@@ -90,9 +90,13 @@ const OrderSuccess = () => {
                                 >
                                     Create Account
                                 </Link>
-                                <button className="border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-50 transition font-semibold">
+                                <Link
+                                    to="/products"
+                                    className="border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-50 transition font-semibold"
+                                >
                                     Maybe Later
-                                </button>
+                                </Link>
+                                
                             </div>
                         </div>
                     </div>

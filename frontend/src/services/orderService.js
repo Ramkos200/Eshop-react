@@ -30,8 +30,6 @@ export const orderService = {
         } catch (error) {
             console.error("Order creation failed:", error.response?.data);
 
-            // Remove or modify the 401 check that forces login
-            // Guest users shouldn't get 401 errors if your backend supports guest checkout
             throw error;
         }
     },

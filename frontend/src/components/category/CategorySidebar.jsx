@@ -202,7 +202,7 @@ const CategorySidebar = ({ onCategorySelect, currentCategory }) => {
             </div>
 
             {/* Price Filter */}
-            <div className="mt-6 pt-4 border-t border-gray-200">
+            {/* <div className="mt-6 pt-4 border-t border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-3 text-sm">
                     Price Range
                 </h4>
@@ -229,10 +229,10 @@ const CategorySidebar = ({ onCategorySelect, currentCategory }) => {
                         </label>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             {/* Clear Filters */}
-            <div className="mt-4 pt-4 border-t border-gray-200">
+            {/* <div className="mt-4 pt-4 border-t border-gray-200">
                 <button
                     onClick={() => {
                         handleCategorySelect(null);
@@ -242,7 +242,7 @@ const CategorySidebar = ({ onCategorySelect, currentCategory }) => {
                 >
                     Clear All Filters
                 </button>
-            </div>
+            </div> */}
 
             {/* Scrollbar Styling */}
             <style jsx="true">{`

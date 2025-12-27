@@ -20,6 +20,7 @@ class Product extends Model
         'img'
 
     ];
+    protected $appends = ['price_range'];
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -44,5 +45,16 @@ class Product extends Model
             ->where('type', 'gallery')
             ->where('imageable_type', 'App\Models\Product')
             ->orderBy('sort_order');
+    }
+    public function getPriceRangeAttribute()
+    {
+        if ($this->skus->isEmpty()) {
+            return 'add variants/skus to get the price range';
+        }
+
+        $min = $this->skus->min('price');
+        $max = $this->skus->max('price');
+
+        return '$' . number_format($min, 2) . '-$' . number_format($max, 2);
     }
 }

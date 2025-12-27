@@ -59,7 +59,6 @@ const Register = () => {
             // Handle validation errors from backend
             if (error.response?.data?.errors) {
                 const errors = error.response.data.errors;
-                // Display the first error
                 const firstError = Object.values(errors)[0][0];
                 setError(firstError);
             } else {

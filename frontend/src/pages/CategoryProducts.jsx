@@ -57,10 +57,14 @@ const CategoryProducts = () => {
             try {
                 setLoading(true);
                 const params = {
-                    category: slug,
                     sort: sortBy,
                     direction: sortOrder,
                 };
+                if (slug) {
+                    params.category = slug;
+                } else if (selectedCategory && !slug) {
+                    params.category_id = selectedCategory.id;
+                }
 
                 if (searchTerm) {
                     params.search = searchTerm;
@@ -74,7 +78,7 @@ const CategoryProducts = () => {
                     setProducts(response.data);
                 }
             } catch (error) {
-                console.error("Failed to fetch products:", error);
+                throw error;
             } finally {
                 setLoading(false);
             }
@@ -95,22 +99,34 @@ const CategoryProducts = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // The useEffect will trigger automatically
+        
     };
 
     const handleAddToCart = async (sku) => {
         try {
             await addToCart(sku.id, 1);
-            // You can add a toast notification here
+            
         } catch (error) {
             alert(error.response?.data?.message || "Failed to add to cart");
         }
     };
 
     const handleSortChange = (e) => {
-        const [field, order] = e.target.value.split("_");
-        setSortBy(field);
-        setSortOrder(order);
+        const value = e.target.value;
+        const sortMap = {
+            created_at_desc: { field: "created_at", order: "desc" },
+            created_at_asc: { field: "created_at", order: "asc" },
+            name_asc: { field: "name", order: "asc" },
+            name_desc: { field: "name", order: "desc" },
+        };
+
+        const sortConfig = sortMap[value] || {
+            field: "created_at",
+            order: "desc",
+        };
+
+        setSortBy(sortConfig.field);
+        setSortOrder(sortConfig.order);
     };
 
     const handleClearSearch = () => {
@@ -320,12 +336,12 @@ const CategoryProducts = () => {
                                     </option>
                                     <option value="name_asc">Name A-Z</option>
                                     <option value="name_desc">Name Z-A</option>
-                                    <option value="price_asc">
+                                    {/* <option value="price_asc">
                                         Price: Low to High
                                     </option>
                                     <option value="price_desc">
                                         Price: High to Low
-                                    </option>
+                                    </option> */}
                                 </select>
                             </div>
                         </div>

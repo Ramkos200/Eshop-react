@@ -92,7 +92,6 @@ export const AuthProvider = ({ children }) => {
         authError,
         updateUser,
         clearError,
-        updateUser,
     };
 
     return (
